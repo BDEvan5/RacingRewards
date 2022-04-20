@@ -2,14 +2,17 @@
 import numpy as np 
 import csv
 
-import RewardSignalDesign.LibFunctions as lib
-
+def get_distance(x1=[0, 0], x2=[0, 0]):
+    d = [0.0, 0.0]
+    for i in range(2):
+        d[i] = x1[i] - x2[i]
+    return np.linalg.norm(d)
 
 def find_closest_pt(pt, wpts):
     """
     Returns the two closes points in order along wpts
     """
-    dists = [lib.get_distance(pt, wpt) for wpt in wpts]
+    dists = [get_distance(pt, wpt) for wpt in wpts]
     min_i = np.argmin(dists)
     d_i = dists[min_i] 
     if min_i == len(dists) - 1:
@@ -35,8 +38,8 @@ def get_tiangle_h(a, b, c):
     return h
 
 def distance_potential(s, s_p, end, beta=0.2, scale=0.5):
-    prev_dist = lib.get_distance(s[0:2], end)
-    cur_dist = lib.get_distance(s_p[0:2], end)
+    prev_dist = get_distance(s[0:2], end)
+    cur_dist = get_distance(s_p[0:2], end)
     d_dis = (prev_dist - cur_dist) / scale
 
     return d_dis * beta
@@ -74,7 +77,7 @@ class TrackPtsBase:
 
         N = len(track)
         self.wpts = track[:, 0:2]
-        ss = np.array([lib.get_distance(self.wpts[i], self.wpts[i+1]) for i in range(N-1)])
+        ss = np.array([get_distance(self.wpts[i], self.wpts[i+1]) for i in range(N-1)])
         ss = np.cumsum(ss)
         self.ss = np.insert(ss, 0, 0)
 

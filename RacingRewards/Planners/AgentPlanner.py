@@ -1,7 +1,7 @@
 import numpy as np 
-from SuperSafety.Utils.TD3 import TD3
-from SuperSafety.Utils.HistoryStructs import TrainHistory
-from SuperSafety.Utils.RewardFunctions import *
+from RacingRewards.Utils.TD3 import TD3
+from RacingRewards.Utils.HistoryStructs import TrainHistory
+from RacingRewards.Utils.RewardFunctions import *
 import torch
 from numba import njit
 

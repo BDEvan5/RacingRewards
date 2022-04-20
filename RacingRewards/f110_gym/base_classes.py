@@ -31,9 +31,9 @@ Author: Hongrui Zheng
 import numpy as np
 from numba import njit
 
-from SuperSafety.f110_gym.dynamic_models import vehicle_dynamics_st, pid
-from SuperSafety.f110_gym.laser_models import ScanSimulator2D, check_ttc_jit, ray_cast
-from SuperSafety.f110_gym.collision_models import get_vertices, collision_multiple
+from RacingRewards.f110_gym.dynamic_models import vehicle_dynamics_st, pid
+from RacingRewards.f110_gym.laser_models import ScanSimulator2D, check_ttc_jit, ray_cast
+from RacingRewards.f110_gym.collision_models import get_vertices, collision_multiple
 
 
 from matplotlib import pyplot as plt

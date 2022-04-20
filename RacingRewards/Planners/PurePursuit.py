@@ -11,7 +11,7 @@ Adjustments have been made
 """
 
 import numpy as np
-from SuperSafety.Utils.utils import init_file_struct
+from RacingRewards.Utils.utils import init_file_struct
 from numba import njit
 import csv
 import os

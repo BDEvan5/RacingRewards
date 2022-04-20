@@ -1,7 +1,7 @@
 from numba.core.decorators import njit
 import numpy as np 
 import os, shutil
-from SuperSafety.Utils.utils import init_file_struct
+from RacingRewards.Utils.utils import init_file_struct
 
 class FollowTheGap:
     def __init__(self, conf, agent_name):

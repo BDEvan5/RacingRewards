@@ -31,8 +31,8 @@ from gym import error, spaces, utils
 from gym.utils import seeding
 
 # base classes
-from SuperSafety.f110_gym.base_classes import Simulator
-from SuperSafety.f110_gym.laser_models import get_dt
+from RacingRewards.f110_gym.base_classes import Simulator
+from RacingRewards.f110_gym.laser_models import get_dt
 
 # others
 import numpy as np
