@@ -1,0 +1,39 @@
+run_name: RewardTest
+
+base_config_name: "config_file"
+n: 1
+
+runs:
+  - run: 2
+    name: "2BasePenalty"
+    rk: 0
+    constant_reward: 1
+    kernel_train_n: 2000
+
+  - run: 3
+    name: "3Bias01"
+    rk: 0.01
+    constant_reward: 1
+    kernel_train_n: 2000
+
+  - run: 32
+    name: "3Bias02"
+    rk: 0.02
+    constant_reward: 1
+    kernel_train_n: 2000
+
+  # - run: 4
+  #   name: "4Bias04"
+  #   rk: 0.04
+  #   constant_reward: 1
+  #   kernel_train_n: 2000
+
+  - run: 5
+    name: "5Bias1"
+    rk: 0.1
+    constant_reward: 1
+    kernel_train_n: 2000
+
+
+
+
