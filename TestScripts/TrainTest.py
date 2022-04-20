@@ -54,7 +54,7 @@ def evaluate_vehicle(env, vehicle, conf, show=False):
 
 def train_baseline_vehicle(env, vehicle, conf, show=False):
     start_time = time.time()
-    state, step_reward, done, info = env.reset(np.array([[conf.sx, conf.sy, conf.stheta]]))
+    state, step_reward, done, info = env.reset()
     print(f"Starting Baseline Training: {vehicle.name}")
     crash_counter = 0
 
@@ -84,7 +84,7 @@ def train_baseline_vehicle(env, vehicle, conf, show=False):
             if state['reward'] == -1:
                 crash_counter += 1
 
-            state, step_reward, done, info = env.reset(np.array([[conf.sx, conf.sy, conf.stheta]]))
+            state, step_reward, done, info = env.reset()
             
         ep_steps += 1
 

@@ -2,13 +2,13 @@
 # map_name: "porto"
 # stheta: -0.4  # porto
 
-map_name: "columbia_small"
-# map_name: "f1_aut_wide"
-stheta: 0  # columbia
+# map_name: "columbia_small"
+# # map_name: "f1_aut_wide"
+# stheta: 0  # columbia
 
-map_ext: ".png"
-sx: 0.0
-sy: 0
+# map_ext: ".png"
+# sx: 0.0
+# sy: 0
 
 # Vehicle params
 max_v: 7
@@ -26,9 +26,9 @@ vehicle_speed: 2          # speed at which the vehilce is set to travel at
 n_beams: 20               # number of beams used by agent
 range_finder_scale: 5     # scaling of beams for NN
 h_size: 100               # size of hidden layers in NN
-r1: 0.012                 # heading & velocity reward value
-r2: 0.006                 # distance reward penalty
-rk: 0.04                  # constant reward applied at every step
+# r1: 0.012                 # heading & velocity reward value
+# r2: 0.006                 # distance reward penalty
+# rk: 0.04                  # constant reward applied at every step
 
 
 #simulator
@@ -45,10 +45,10 @@ v_min_plan: 1            # minimum speed for selecting a steering angle to preve
 # test params
 test_n: 10               # number of test episodes to run
 baseline_train_n: 20000            # number of training steps to train agent
-kernel_train_n: 2000            # number of training steps to train agent
 buffer_n: 500
 
 #save_paths
 vehicle_path: "Data/Vehicles/"
+
 
 

@@ -82,8 +82,9 @@ class TrainVehicle(BaseVehicle):
 
         self.t_his = TrainHistory(agent_name, sim_conf, load)
 
+        self.calculate_reward = None
         # self.calculate_reward = RefDistanceReward(sim_conf) 
-        self.calculate_reward = RefCTHReward(sim_conf) 
+        # self.calculate_reward = RefCTHReward(sim_conf) 
 
     def plan(self, obs, add_mem_entry=True):
         nn_obs = self.transform_obs(obs)

@@ -582,7 +582,7 @@ class Simulator(object):
 
         return observations
 
-    def reset(self, poses):
+    def reset(self, poses=None):
         """
         Resets the simulation environment by given poses
 
@@ -593,9 +593,10 @@ class Simulator(object):
             None
         """
         
-        if poses.shape[0] != self.num_agents:
-            raise ValueError('Number of poses for reset does not match number of agents.')
+        # if poses.shape[0] != self.num_agents:
+            # raise ValueError('Number of poses for reset does not match number of agents.')
 
         # loop over poses to reset
         for i in range(self.num_agents):
-            self.agents[i].reset(poses[i, :])
+            self.agents[i].reset(np.zeros(3))
+ #           self.agents[i].reset(poses[i, :])

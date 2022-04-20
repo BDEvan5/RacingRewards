@@ -343,7 +343,7 @@ class F110Env(gym.Env):
         self.logger.write_env_log(string)
         self.logger.lap += 1
 
-    def reset(self, poses):
+    def reset(self, poses=None):
         """
         Reset the gym environment by given poses
 
@@ -365,9 +365,12 @@ class F110Env(gym.Env):
         self.toggle_list = np.zeros((self.num_agents,))
 
         # states after reset
-        self.start_xs = poses[:, 0]
-        self.start_ys = poses[:, 1]
-        self.start_thetas = poses[:, 2]
+        # self.start_xs = poses[:, 0]
+        # self.start_ys = poses[:, 1]
+        # self.start_thetas = poses[:, 2]
+        self.start_xs = np.zeros(1)
+        self.start_ys = np.zeros(1)
+        self.start_thetas = np.zeros(1)
         self.start_rot = np.array([[np.cos(-self.start_thetas[self.ego_idx]), -np.sin(-self.start_thetas[self.ego_idx])], [np.sin(-self.start_thetas[self.ego_idx]), np.cos(-self.start_thetas[self.ego_idx])]])
 
         # call reset to simulator

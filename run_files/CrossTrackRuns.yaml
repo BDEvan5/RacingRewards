@@ -1,0 +1,19 @@
+reward_name: "CrossTrack"
+
+n: 2
+
+runs:
+  - run: 0
+    run_name: " "
+    map_name: "porto"
+    r_ct: 0.006
+    r_head: 0.012
+
+  - run: 1
+    run_name: " "
+    map_name: "columbia_small"
+    r_ct: 0.006
+    r_head: 0.012
+
+
+

@@ -25,8 +25,8 @@ def load_conf(fname):
 
     return conf
 
-def load_yaml_dict(fname):
-    full_path =  "config/" + fname + '.yaml'
+def load_run_list(fname):
+    full_path =  "run_files/" + fname + '.yaml'
     with open(full_path) as file:
         conf_dict = yaml.load(file, Loader=yaml.FullLoader)
 
@@ -49,3 +49,23 @@ def limit_phi(phi):
     while phi < -np.pi:
         phi = phi + 2*np.pi
     return phi
+
+
+def setup_run_list(run_file):
+    run_dict = load_run_list(run_file)
+
+    run_list = []
+    run_n = 0
+    for rep in range(run_dict['n']):
+        for run in run_dict['runs']:
+            run["id"] = run_n
+            run["n"] = rep
+            run['run_name'] = f"{run_dict['reward_name']}_{run['map_name']}_{run['r_ct']}_{run['r_head']}_{rep}_{run_n}"
+            run['path'] = f"{run_dict['reward_name']}/"
+
+            run_list.append(Namespace(**run))
+            run_n += 1
+
+    return run_list
+
+
