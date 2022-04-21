@@ -4,8 +4,8 @@ import os, shutil
 from RacingRewards.Utils.utils import init_file_struct
 
 class FollowTheGap:
-    def __init__(self, conf, agent_name):
-        self.name = agent_name
+    def __init__(self, conf, run):
+        self.name = run.run_name
         self.conf = conf
         self.map = None
         self.cur_scan = None
@@ -16,7 +16,7 @@ class FollowTheGap:
         self.v_min_plan = conf.v_min_plan
         self.speed = conf.vehicle_speed
 
-        path = os.getcwd() + "/" + conf.vehicle_path + self.name
+        path = os.getcwd() + "/Data/Vehicles/" + run.path + self.name
         init_file_struct(path)
 
     def plan(self, obs):

@@ -43,7 +43,7 @@ v_gain: 0.9
 v_min_plan: 1            # minimum speed for selecting a steering angle to prevent instability
 
 # test params
-test_n: 1              # number of test episodes to run
+test_n: 10              # number of test episodes to run
 baseline_train_n: 1000            # number of training steps to train agent
 buffer_n: 500
 

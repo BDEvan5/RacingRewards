@@ -1,6 +1,6 @@
 reward_name: "CrossTrack"
 
-n: 2
+n: 1
 
 runs:
   - run: 0

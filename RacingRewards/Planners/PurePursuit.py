@@ -241,10 +241,10 @@ def get_actuation(pose_theta, lookahead_point, position, lookahead_distance, whe
     return speed, steering_angle
 
 class PurePursuit:
-    def __init__(self, conf, name="PurePursuit"):
-        self.name = name
+    def __init__(self, conf, run):
+        self.name = run.run_name
         
-        self.trajectory = Trajectory(conf.map_name)
+        self.trajectory = Trajectory(run.map_name)
 
         self.lookahead = conf.lookahead
         self.vgain = conf.v_gain
@@ -253,7 +253,7 @@ class PurePursuit:
         self.max_steer = conf.max_steer
         self.vehicle_speed = conf.vehicle_speed
 
-        path = os.getcwd() + f"/{conf.vehicle_path}" + self.name
+        path = os.getcwd() + f"/Data/Vehicles/" + run.path  + self.name
         init_file_struct(path)
 
     def plan(self, obs):

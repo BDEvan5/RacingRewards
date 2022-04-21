@@ -51,6 +51,25 @@ def limit_phi(phi):
     return phi
 
 
+# def setup_run_list(run_file):
+#     run_dict = load_run_list(run_file)
+
+#     run_list = []
+#     run_n = 0
+#     for rep in range(run_dict['n']):
+#         for run in run_dict['runs']:
+#             run["id"] = run_n
+#             run["n"] = rep
+#             run['run_name'] = f"{run_dict['reward_name']}_{run['map_name']}_{run['r_ct']}_{run['r_head']}_{rep}_{run_n}"
+#             run['path'] = f"{run_dict['reward_name']}/"
+
+#             run_list.append(Namespace(**run))
+#             run_n += 1
+
+#     return run_list
+
+
+
 def setup_run_list(run_file):
     run_dict = load_run_list(run_file)
 
@@ -60,7 +79,7 @@ def setup_run_list(run_file):
         for run in run_dict['runs']:
             run["id"] = run_n
             run["n"] = rep
-            run['run_name'] = f"{run_dict['reward_name']}_{run['map_name']}_{run['r_ct']}_{run['r_head']}_{rep}_{run_n}"
+            run['run_name'] = f"{run_dict['reward_name']}_{run['map_name']}_{rep}_{run_n}"
             run['path'] = f"{run_dict['reward_name']}/"
 
             run_list.append(Namespace(**run))
