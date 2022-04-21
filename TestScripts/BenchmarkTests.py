@@ -16,7 +16,8 @@ def purepursuit_base_test():
         env = F110Env(map=run.map_name)
 
         planner = PurePursuit(conf, run)
-        eval_dict = evaluate_vehicle(env, planner, conf, False)
+        eval_dict = evaluate_vehicle(env, planner, conf, True)
+        # eval_dict = evaluate_vehicle(env, planner, conf, False)
 
         run_dict = vars(run)
         run_dict.update(eval_dict)
@@ -50,4 +51,4 @@ def fgm_base_test():
 if __name__ == "__main__":
 
     purepursuit_base_test()
-    fgm_base_test()
+    # fgm_base_test()

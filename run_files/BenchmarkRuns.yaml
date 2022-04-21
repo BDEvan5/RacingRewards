@@ -4,6 +4,9 @@ reward_name: "NotSet"
 n: 2
 
 runs:
+  - run: 4
+    run_name: " "
+    map_name: "levine_blocked"
   - run: 0
     run_name: " "
     map_name: "porto"
@@ -12,17 +15,13 @@ runs:
     run_name: " "
     map_name: "columbia_small"
 
-  # - run: 2
-  #   run_name: " "
-  #   map_name: "berlin"
+  - run: 2
+    run_name: " "
+    map_name: "berlin"
 
   - run: 3
     run_name: " "
     map_name: "f1_aut_wide"
-
-  - run: 4
-    run_name: " "
-    map_name: "levine_blocked"
 
 
 

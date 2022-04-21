@@ -211,6 +211,8 @@ class Trajectory:
         self.waypoints = np.array(new_line)
         self.vs = np.array(new_vs)
 
+        # self.show_pts()
+
     def get_current_waypoint(self, position, lookahead_distance):
         #TODO: for compuational efficiency, pass the l2s and the diffs to the functions so that they don't have to be recalculated
         wpts = np.vstack((self.waypoints[:, 0], self.waypoints[:, 1])).T
@@ -229,6 +231,13 @@ class Trajectory:
             return np.append(wpts[i, :], self.vs[i])
         else:
             raise Exception("Waypoint not found")
+
+    def show_pts(self):
+        from matplotlib import pyplot as plt
+        plt.figure(3)
+        plt.plot(self.waypoints[:,0], self.waypoints[:,1])
+        plt.show()
+
 
 @njit(fastmath=False, cache=True)
 def get_actuation(pose_theta, lookahead_point, position, lookahead_distance, wheelbase):

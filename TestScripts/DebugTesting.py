@@ -7,22 +7,21 @@ from RacingRewards.RewardSignals.CrossTrackReward import CrossTrackReward
 
 
 
-def crosstrack_base_test():
+def base_test():
     conf = load_conf("config_file")
-    runs = setup_run_list("CrossTrackRuns")
+    runs = setup_run_list("DebugRuns")
 
     for run in runs:
         env = F110Env(map=run.map_name)
 
         planner = TrainVehicle(run, conf)
         planner.calculate_reward = CrossTrackReward(run)
-        train_baseline_vehicle(env, planner, conf, False)
+        train_baseline_vehicle(env, planner, conf, True)
 
         planner = TestVehicle(run, conf)
-        eval_dict = evaluate_vehicle(env, planner, conf, False)
+        eval_dict = evaluate_vehicle(env, planner, conf, True)
 
            
-        # config_dict = vars(conf)
         run_dict = vars(run)
         run_dict.update(eval_dict)
 
@@ -32,4 +31,4 @@ def crosstrack_base_test():
 
 
 if __name__ == "__main__":
-    crosstrack_base_test()
+    base_test()

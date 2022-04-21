@@ -390,6 +390,11 @@ class ScanSimulator2D(object):
         # get the distance transform
         self.dt = get_dt(self.map_img, self.map_resolution)
 
+        # from matplotlib import pyplot as plt
+        # plt.figure(1)
+        # plt.imshow(self.dt)
+        # plt.show()
+
         return True
 
     def scan(self, pose, rng, std_dev=0.01):
