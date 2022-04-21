@@ -9,8 +9,8 @@ from numba import njit
 # Admin functions
 def save_conf_dict(dictionary, save_name=None):
     if save_name is None:
-        save_name  = dictionary["agent_name"]
-    path = dictionary["vehicle_path"] + dictionary["agent_name"] + f"/{save_name}_record.yaml"
+        save_name  = dictionary["run_name"]
+    path = "Data/Vehicles/" + dictionary["path"] + dictionary["run_name"] + f"/{save_name}_record.yaml"
     with open(path, 'w') as file:
         yaml.dump(dictionary, file)
 

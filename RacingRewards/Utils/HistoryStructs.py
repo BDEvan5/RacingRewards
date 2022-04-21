@@ -24,9 +24,8 @@ def moving_average(data, period):
     return np.convolve(data, np.ones(period), 'same') / period
 
 class TrainHistory():
-    def __init__(self, agent_name, conf, load=False) -> None:
-        self.agent_name = agent_name
-        self.path = conf.vehicle_path + self.agent_name 
+    def __init__(self, run, conf) -> None:
+        self.path = conf.vehicle_path + run.path +  run.run_name 
 
         # training data
         self.ptr = 0
@@ -40,17 +39,6 @@ class TrainHistory():
         self.ep_reward = 0
         self.ep_rewards = []
 
-        if not load:
-            self.init_file_struct()
-
-    def init_file_struct(self):
-        path = os.getcwd() +'/' + self.path
-        if os.path.exists(path):
-            try:
-                os.rmdir(path)
-            except:
-                shutil.rmtree(path)
-        os.mkdir(path)
 
     def add_step_data(self, new_r):
         self.ep_reward += new_r

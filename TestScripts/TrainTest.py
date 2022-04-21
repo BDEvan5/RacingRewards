@@ -9,7 +9,7 @@ def evaluate_vehicle(env, vehicle, conf, show=False):
     start = time.time()
 
     for i in range(conf.test_n):
-        obs, step_reward, done, info = env.reset(np.array([[conf.sx, conf.sy, conf.stheta]]))
+        obs, step_reward, done, info = env.reset()
         while not done:
             action = vehicle.plan(obs)
             sim_steps = conf.sim_steps

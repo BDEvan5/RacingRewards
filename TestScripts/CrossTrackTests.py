@@ -1,3 +1,4 @@
+from distutils.command.config import config
 from RacingRewards.f110_gym.f110_env import F110Env
 from RacingRewards.Utils.utils import *
 
@@ -14,19 +15,19 @@ def crosstrack_base_test():
     for run in runs:
         env = F110Env(map=run.map_name)
 
-        planner = TrainVehicle(run.run_name, conf)
+        planner = TrainVehicle(run, conf)
         planner.calculate_reward = CrossTrackReward(run)
         train_baseline_vehicle(env, planner, conf, False)
 
-        planner = TestVehicle(run.run_name, conf)
-        eval_dict = evaluate_vehicle(env, planner, conf, True)
+        planner = TestVehicle(run, conf)
+        eval_dict = evaluate_vehicle(env, planner, conf, False)
 
            
-        config_dict = vars(conf)
-        config_dict['run'] = vars(run)
-        config_dict['Wo'] = eval_dict
+        # config_dict = vars(conf)
+        run_dict = vars(run)
+        run_dict.update(eval_dict)
 
-        save_conf_dict(config_dict)
+        save_conf_dict(run_dict)
         env.close_rendering()     
 
 

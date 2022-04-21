@@ -5,6 +5,8 @@ from RacingRewards.Utils.RewardFunctions import *
 import torch
 from numba import njit
 
+from RacingRewards.Utils.utils import init_file_struct
+
 # @njit(cache=True)
 # def calculate_max_speed(delta):
 #     b = 0.523
@@ -67,12 +69,13 @@ class BaseVehicle:
         return action
 
 class TrainVehicle(BaseVehicle):
-    def __init__(self, agent_name, sim_conf, load=False):
-        super().__init__(agent_name, sim_conf)
+    def __init__(self, run, sim_conf, load=False):
+        super().__init__(run.run_name, sim_conf)
 
-        self.path = sim_conf.vehicle_path + agent_name
+        self.path = sim_conf.vehicle_path + run.path + run.run_name 
+        if not load: init_file_struct(self.path)
         state_space = 2 + self.n_beams
-        self.agent = TD3(state_space, 1, 1, agent_name)
+        self.agent = TD3(state_space, 1, 1, run.run_name)
         self.agent.try_load(load, sim_conf.h_size, self.path)
 
         self.state = None
@@ -80,7 +83,7 @@ class TrainVehicle(BaseVehicle):
         self.nn_act = None
         self.action = None
 
-        self.t_his = TrainHistory(agent_name, sim_conf, load)
+        self.t_his = TrainHistory(run, sim_conf)
 
         self.calculate_reward = None
         # self.calculate_reward = RefDistanceReward(sim_conf) 
@@ -154,7 +157,7 @@ class TrainVehicle(BaseVehicle):
 
 
 class TestVehicle(BaseVehicle):
-    def __init__(self, agent_name, sim_conf):
+    def __init__(self, run, sim_conf):
         """
         Testing vehicle using the reference modification navigation stack
 
@@ -164,12 +167,12 @@ class TestVehicle(BaseVehicle):
             mod_conf: namespace with modification planner parameters
         """
 
-        super().__init__(agent_name, sim_conf)
+        super().__init__(run.run_name, sim_conf)
+        self.path = sim_conf.vehicle_path + run.path + run.run_name 
 
-        self.path = sim_conf.vehicle_path + agent_name
-        self.actor = torch.load(self.path + '/' + agent_name + "_actor.pth")
+        self.actor = torch.load(self.path + '/' + run.run_name + "_actor.pth")
 
-        print(f"Agent loaded: {agent_name}")
+        print(f"Agent loaded: {run.run_name}")
 
     def plan(self, obs):
         nn_obs = self.transform_obs(obs)
