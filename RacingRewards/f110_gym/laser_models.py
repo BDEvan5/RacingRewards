@@ -361,7 +361,18 @@ class ScanSimulator2D(object):
         # TODO: throw error if image specification isn't met
 
         # load map image
-        map_img_path = os.path.splitext(map_path)[0] + map_ext
+        # load map yaml
+        with open(map_path, 'r') as yaml_stream:
+            try:
+                map_metadata = yaml.safe_load(yaml_stream)
+                self.map_resolution = map_metadata['resolution']
+                self.origin = map_metadata['origin']
+                map_img_name = map_metadata['image']
+            except yaml.YAMLError as ex:
+                print(ex)
+
+        map_img_path = "maps/" + map_img_name
+        # map_img_path = os.path.splitext(map_path)[0] + map_ext
         self.map_img = np.array(Image.open(map_img_path).transpose(Image.FLIP_TOP_BOTTOM))
         self.map_img = self.map_img.astype(np.float64)
 
@@ -372,14 +383,6 @@ class ScanSimulator2D(object):
         self.map_height = self.map_img.shape[0]
         self.map_width = self.map_img.shape[1]
 
-        # load map yaml
-        with open(map_path, 'r') as yaml_stream:
-            try:
-                map_metadata = yaml.safe_load(yaml_stream)
-                self.map_resolution = map_metadata['resolution']
-                self.origin = map_metadata['origin']
-            except yaml.YAMLError as ex:
-                print(ex)
 
         # calculate map parameters
         self.orig_x = self.origin[0]
