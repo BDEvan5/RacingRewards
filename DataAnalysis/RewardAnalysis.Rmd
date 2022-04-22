@@ -1,0 +1,33 @@
+---
+title: "RewardAnalysis"
+author: "Benjamin Evans"
+date: "22/04/2022"
+output: html_document
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+data = read.csv("DataTable.csv")
+
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(knitr)
+
+```
+
+# All Tests
+
+```{r}
+d_table = data %>%
+  select(map_name, path, avg_times, success_rate)%>%
+  arrange(path)
+
+kable(d_table)
+```
+
+
+
+

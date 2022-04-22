@@ -80,6 +80,7 @@ def setup_run_list(run_file):
             run["id"] = run_n
             run["n"] = rep
             run['run_name'] = f"{run_dict['reward_name']}_{run['map_name']}_{rep}_{run_n}"
+            run['reward_name'] = run_dict['reward_name']
             run['path'] = f"{run_dict['reward_name']}/"
 
             run_list.append(Namespace(**run))

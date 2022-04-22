@@ -11,8 +11,6 @@ def purepursuit_base_test():
     runs = setup_run_list("BenchmarkRuns")
 
     for run in runs:
-        run.reward_name = "PP"
-        run.path = "PP/"
         env = F110Env(map=run.map_name)
 
         planner = PurePursuit(conf, run)
@@ -31,8 +29,6 @@ def fgm_base_test():
     runs = setup_run_list("BenchmarkRuns")
 
     for run in runs:
-        run.reward_name = "FGM"
-        run.path = "FGM/"
         env = F110Env(map=run.map_name)
 
         planner = FollowTheGap(conf, run)
@@ -50,5 +46,5 @@ def fgm_base_test():
 
 if __name__ == "__main__":
 
-    purepursuit_base_test()
+    # purepursuit_base_test()
     fgm_base_test()

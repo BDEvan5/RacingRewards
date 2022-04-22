@@ -44,7 +44,7 @@ v_min_plan: 1            # minimum speed for selecting a steering angle to preve
 
 # test params
 test_n: 10              # number of test episodes to run
-baseline_train_n: 1000            # number of training steps to train agent
+baseline_train_n: 20000            # number of training steps to train agent
 buffer_n: 500
 
 #save_paths
