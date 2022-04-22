@@ -236,6 +236,7 @@ class Trajectory:
         from matplotlib import pyplot as plt
         plt.figure(3)
         plt.plot(self.waypoints[:,0], self.waypoints[:,1])
+        plt.gca().set_aspect('equal', adjustable='box')
         plt.show()
 
 

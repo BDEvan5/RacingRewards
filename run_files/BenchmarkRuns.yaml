@@ -1,12 +1,13 @@
 reward_name: "NotSet"
 # reward_name: "PP"
 
-n: 2
+n: 1
 
 runs:
   - run: 4
     run_name: " "
     map_name: "levine_blocked"
+
   - run: 0
     run_name: " "
     map_name: "porto"
