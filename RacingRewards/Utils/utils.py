@@ -42,6 +42,11 @@ def init_file_struct(path):
             shutil.rmtree(path)
     os.mkdir(path)
 
+def init_reward_struct(path):
+    if os.path.exists(path):
+        return 
+    os.mkdir(path)
+
 @njit(cache=True)
 def limit_phi(phi):
     while phi > np.pi:
@@ -85,6 +90,8 @@ def setup_run_list(run_file):
 
             run_list.append(Namespace(**run))
             run_n += 1
+
+    init_reward_struct("Data/Vehicles/" + run_list[0].path)
 
     return run_list
 

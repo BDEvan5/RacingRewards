@@ -1,0 +1,53 @@
+reward_name: "Baseline"
+
+n: 1
+
+runs:
+# baseline
+  - run: 0
+    run_name: " "
+    map_name: "porto"
+    r_bias: 0
+
+  - run: 1
+    run_name: " "
+    map_name: "levine_blocked"
+    r_bias: 0
+
+  - run: 2
+    run_name: " "
+    map_name: "f1_aut_wide"
+    r_bias: 0
+
+# Pos bias
+  - run: 0
+    run_name: " "
+    map_name: "porto"
+    r_bias: 0.01
+
+  - run: 1
+    run_name: " "
+    map_name: "levine_blocked"
+    r_bias: 0.01
+
+  - run: 2
+    run_name: " "
+    map_name: "f1_aut_wide"
+    r_bias: 0.01
+
+# Negative bais
+  - run: 0
+    run_name: " "
+    map_name: "porto"
+    r_bias: -0.01
+
+  - run: 1
+    run_name: " "
+    map_name: "levine_blocked"
+    r_bias: -0.01
+
+  - run: 2
+    run_name: " "
+    map_name: "f1_aut_wide"
+    r_bias: -0.01
+
