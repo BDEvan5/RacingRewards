@@ -1,7 +1,8 @@
-reward_name: "FGM"
-# reward_name: "PP"
+# reward_name: "FGM"
+reward_name: "PP"
 
 n: 1
+set_n: 6
 
 runs:
   - run: 4

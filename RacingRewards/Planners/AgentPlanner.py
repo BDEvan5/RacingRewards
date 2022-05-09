@@ -5,22 +5,11 @@ from RacingRewards.Utils.RewardFunctions import *
 import torch
 from numba import njit
 
-from RacingRewards.Utils.utils import init_file_struct
+from RacingRewards.Utils.utils import init_file_struct, calculate_speed
 
-# @njit(cache=True)
-# def calculate_max_speed(delta):
-#     b = 0.523
-#     g = 9.81
-#     l_d = 0.329
-#     f_s = 0.5
-#     max_v = 7
+from matplotlib import pyplot as plt
 
-#     if abs(delta) < 0.06:
-#         return max_v
 
-#     V = f_s * np.sqrt(b*g*l_d/np.tan(abs(delta)))
-
-#     return V
 
 class BaseVehicle: 
     def __init__(self, agent_name, sim_conf):
@@ -61,12 +50,16 @@ class BaseVehicle:
     def transform_action(self, nn_action):
         steering_angle = nn_action[0] * self.max_steer
         # this is to ensure that it doesn't stay still
+
         # speed = (nn_action[1] + 1) * (self.max_v  / 2 - 0.5) + 1
-        # max_speed = calculate_speed(steering_angle)
+
+        speed = calculate_speed(steering_angle)
         # speed = self.max_v
-        action = np.array([steering_angle, self.speed])
+        action = np.array([steering_angle, speed])
+        # action = np.array([steering_angle, self.speed])
 
         return action
+
 
 class TrainVehicle(BaseVehicle):
     def __init__(self, run, sim_conf, load=False):
@@ -144,7 +137,6 @@ class TrainVehicle(BaseVehicle):
 
         self.agent.replay_buffer.add(self.nn_state, self.nn_act, nn_s_prime, reward, True)
 
-
     def lap_complete(self):
         """
         To be called when ep is done.
@@ -188,4 +180,5 @@ class TestVehicle(BaseVehicle):
         self.action = self.transform_action(nn_action)
 
         return self.action # implemented for the safety wrapper
+
 

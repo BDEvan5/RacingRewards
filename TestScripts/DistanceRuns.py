@@ -3,26 +3,25 @@ from RacingRewards.Utils.utils import *
 
 from TrainTest import *
 from RacingRewards.Planners.AgentPlanner import TrainVehicle, TestVehicle
-from RacingRewards.RewardSignals.BaselineReward import BaselineReward
+from RacingRewards.RewardSignals.DistanceReward import DistanceReward
 
 
 
-def baseline_tests():
+def distance_tests():
     conf = load_conf("config_file")
-    runs = setup_run_list("BaselineRuns")
+    runs = setup_run_list("DistanceRuns")
 
     for run in runs:
         env = F110Env(map=run.map_name)
 
         planner = TrainVehicle(run, conf)
-        planner.calculate_reward = BaselineReward(run)
+        planner.calculate_reward = DistanceReward(run)
         train_baseline_vehicle(env, planner, conf, False)
 
         planner = TestVehicle(run, conf)
-        eval_dict = evaluate_vehicle(env, planner, conf, True)
+        eval_dict = evaluate_vehicle(env, planner, conf, False)
 
            
-        # config_dict = vars(conf)
         run_dict = vars(run)
         run_dict.update(eval_dict)
 
@@ -32,4 +31,4 @@ def baseline_tests():
 
 
 if __name__ == "__main__":
-    baseline_tests()
+    distance_tests()

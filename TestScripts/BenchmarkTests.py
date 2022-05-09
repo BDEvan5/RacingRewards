@@ -46,5 +46,5 @@ def fgm_base_test():
 
 if __name__ == "__main__":
 
-    # purepursuit_base_test()
-    fgm_base_test()
+    purepursuit_base_test()
+    # fgm_base_test()

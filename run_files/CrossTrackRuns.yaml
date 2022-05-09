@@ -1,6 +1,7 @@
 reward_name: "CrossTrack"
 
 n: 1
+set_n: 2
 
 runs:
   - run: 0
@@ -12,6 +13,23 @@ runs:
   - run: 1
     run_name: " "
     map_name: "columbia_small"
+    r_ct: 0.006
+    r_head: 0.012
+
+  - run: 0
+    run_name: " "
+    map_name: "levine_blocked"
+    r_ct: 0.006
+    r_head: 0.012
+
+  # - run: 1
+  #   run_name: " "
+  #   map_name: "f1_aut_wide"
+  #   r_ct: 0.006
+  #   r_head: 0.012
+  - run: 0
+    run_name: " "
+    map_name: "berlin"
     r_ct: 0.006
     r_head: 0.012
 

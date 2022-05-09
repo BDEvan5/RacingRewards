@@ -125,3 +125,7 @@ dmypy.json
 
 Data/
 .Rproj.user
+
+DataAnalysis/.RData
+
+DataAnalysis/.Rhistory

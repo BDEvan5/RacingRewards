@@ -20,14 +20,63 @@ library(knitr)
 
 # All Tests
 
+
+
+
 ```{r}
 d_table = data %>%
-  select(map_name, path, avg_times, success_rate)%>%
+  select(map_name, set_n, path, avg_times, success_rate)%>%
   arrange(path)
 
 kable(d_table)
 ```
 
 
+## Benchmark
+
+```{r}
+d_table = data %>%
+  filter(reward_name=="PP")%>%
+  select(map_name, path, set_n, avg_times)%>%
+  pivot_wider(names_from = map_name, values_from = avg_times)%>%
+  arrange(set_n)
+
+kable(d_table)
+```
+
+## Baseline Tests
 
 
+```{r}
+d_table = data %>%
+  filter(reward_name=="Baseline")%>%
+  select(map_name, path, avg_times, r_bias)%>%
+  pivot_wider(names_from = map_name, values_from = avg_times)%>%
+  arrange(r_bias)
+
+kable(d_table)
+```
+
+
+
+## Distance
+
+```{r}
+d_table = data %>%
+  filter(reward_name=="Distance")%>%
+  select(map_name, path, set_n, b_distance, avg_times, success_rate)%>%
+  # pivot_wider(names_from = map_name, values_from = avg_times)%>%
+  arrange(set_n, b_distance) 
+  # arrange(b_distance)
+
+kable(d_table)
+```
+```{r}
+data %>%
+  filter(reward_name=="Distance"& map_name=="columbia_small")%>%
+  select(b_distance, avg_times)%>%
+  ggplot(aes(x=b_distance, y=avg_times))+
+  geom_point()
+  
+  
+```

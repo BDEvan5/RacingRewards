@@ -5,6 +5,8 @@ from argparse import Namespace
 import shutil
 import numpy as np
 from numba import njit
+from matplotlib import pyplot as plt
+
 
 # Admin functions
 def save_conf_dict(dictionary, save_name=None):
@@ -80,11 +82,13 @@ def setup_run_list(run_file):
 
     run_list = []
     run_n = 0
+    set_n = run_dict['set_n']
     for rep in range(run_dict['n']):
         for run in run_dict['runs']:
             run["id"] = run_n
             run["n"] = rep
-            run['run_name'] = f"{run_dict['reward_name']}_{run['map_name']}_{rep}_{run_n}"
+            run["set_n"] = set_n
+            run['run_name'] = f"{run_dict['reward_name']}_{run['map_name']}_{rep}_{set_n}_{run_n}"
             run['reward_name'] = run_dict['reward_name']
             run['path'] = f"{run_dict['reward_name']}/"
 
@@ -96,3 +100,34 @@ def setup_run_list(run_file):
     return run_list
 
 
+
+@njit(cache=True)
+def calculate_speed(delta, f_s=0.9):
+    b = 0.523
+    g = 9.81
+    l_d = 0.329
+    # f_s = 0.7
+    max_v = 6
+
+    # if abs(delta) < 0.03:
+    #     return max_v
+
+    V = f_s * np.sqrt(b*g*l_d/np.tan(abs(delta)))
+
+    V = min(V, max_v)
+
+    return V
+
+def plot_speed_profile():
+    ds = np.linspace(-0.4, 0.4, 50)
+
+    plt.figure(1)
+    for fs in [0.5, 0.6, 0.7, 0.8, 0.9, 1]:
+        vs = np.array([calculate_speed(d, fs) for d in ds])
+        plt.plot(ds, vs)
+    plt.show()
+
+if __name__ == '__main__':
+
+
+    plot_speed_profile()

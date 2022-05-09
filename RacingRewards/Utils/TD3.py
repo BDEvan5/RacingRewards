@@ -123,7 +123,7 @@ class Critic(nn.Module):
 
 
 class TD3(object):
-    def __init__(self, state_dim, action_dim, max_action, name):
+    def __init__(self, state_dim, action_dim, max_action, name, seed=False):
         self.name = name
         self.state_dim = state_dim
         self.max_action = max_action
@@ -139,10 +139,10 @@ class TD3(object):
 
         self.replay_buffer = SmartBufferTD3(state_dim=state_dim, act_dim=action_dim)
 
-
-        torch.manual_seed(0)
-        torch.use_deterministic_algorithms(True)
-        np.random.seed(0)
+        if seed:
+            torch.manual_seed(0)
+            torch.use_deterministic_algorithms(True)
+            np.random.seed(0)
 
     def create_agent(self, h_size):
         state_dim = self.state_dim

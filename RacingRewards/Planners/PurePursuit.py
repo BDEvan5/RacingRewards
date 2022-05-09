@@ -11,10 +11,11 @@ Adjustments have been made
 """
 
 import numpy as np
-from RacingRewards.Utils.utils import init_file_struct
+from RacingRewards.Utils.utils import init_file_struct, calculate_speed
 from numba import njit
 import csv
 import os
+
 
 @njit(fastmath=True, cache=True)
 def add_locations(x1, x2, dx=1):
@@ -284,7 +285,10 @@ class PurePursuit:
         steering_angle = np.clip(steering_angle, -self.max_steer, self.max_steer)
         # speed *= self.vgain
 
-        return np.array([steering_angle, self.vehicle_speed])
+        speed = calculate_speed(steering_angle)
+
+        # return np.array([steering_angle, self.vehicle_speed])
+        return np.array([steering_angle, speed])
 
 
 
