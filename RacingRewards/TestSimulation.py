@@ -23,18 +23,28 @@ class TestSimulation():
 
         self.race_track = None
 
+        # flags 
+        self.show_test = False
+        self.show_train = False
+        self.verbose = False
+
     def run_testing_evaluation(self):
         for run in self.run_data:
             self.env = F110Env(map=run.map_name)
 
-            # self.planner = TestVehicle(self.test_params, self.conf)
-            self.planner = PurePursuit(self.conf, run)
+            self.planner = TestVehicle(run, self.conf)
+            # self.planner = PurePursuit(self.conf, run)
 
             self.n_test_laps = self.test_params.n_test_laps
             self.lap_times = []
             self.completed_laps = 0
 
-            self.run_testing()
+            eval_dict = self.run_testing()
+            run_dict = vars(run)
+            run_dict.update(eval_dict)
+
+            save_conf_dict(run_dict)
+
 
     def run_testing(self):
         assert self.env != None, "No environment created"
@@ -46,19 +56,33 @@ class TestSimulation():
             while not observation['colision_done'] and not observation['lap_done']:
                 action = self.planner.plan(observation)
                 observation = self.run_step(action)
-                self.env.render('human_fast')
+                if self.show_test: self.env.render('human_fast')
 
                 if observation['lap_done']:
-                    print(f"Lap {i} Complete in time: {observation['current_laptime']}")
+                    if self.verbose: print(f"Lap {i} Complete in time: {observation['current_laptime']}")
                     self.lap_times.append(observation['current_laptime'])
                     self.completed_laps += 1
 
                 if observation['colision_done']:
-                    print(f"Lap {i} Crashed in time: {observation['current_laptime']}")
+                    if self.verbose: print(f"Lap {i} Crashed in time: {observation['current_laptime']}")
                     
-
         print(f"Tests are finished in: {time.time() - start_time}")
 
+        success_rate = (self.completed_laps / (self.n_test_laps) * 100)
+        if len(self.lap_times) > 0:
+            avg_times, std_dev = np.mean(self.lap_times), np.std(self.lap_times)
+        else:
+            avg_times, std_dev = 0, 0
+
+        print(f"Crashes: {self.n_test_laps - self.completed_laps} VS Completes {self.completed_laps} --> {success_rate:.2f} %")
+        print(f"Lap times Avg: {avg_times} --> Std: {std_dev}")
+
+        eval_dict = {}
+        eval_dict['success_rate'] = float(success_rate)
+        eval_dict['avg_times'] = float(avg_times)
+        eval_dict['std_dev'] = float(std_dev)
+
+        return eval_dict
 
     # this is an overide
     def run_step(self, action):
@@ -136,19 +160,29 @@ class TrainSimulation(TestSimulation):
     def run_training_evaluation(self):
         for run in self.run_data:
             self.env = F110Env(map=run.map_name)
+
+            #train
             self.race_track = RaceTrack(run.map_name)
             self.race_track.load_center_pts()
             self.reward = DistanceReward(self.race_track)
 
             self.planner = TrainVehicle(run, self.conf)
+            self.completed_laps = 0
 
+            self.run_training()
 
+            #Test
+            self.planner = TestVehicle(run, self.conf)
             self.n_test_laps = self.test_params.n_test_laps
             self.lap_times = []
             self.completed_laps = 0
 
-            self.run_training()
-            self.run_testing()
+            eval_dict = self.run_testing()
+            run_dict = vars(run)
+            run_dict.update(eval_dict)
+
+            save_conf_dict(run_dict)
+
 
     def run_training(self):
         assert self.env != None, "No environment created"
@@ -165,20 +199,20 @@ class TrainSimulation(TestSimulation):
 
             self.planner.agent.train(2)
 
-            self.env.render('human_fast')
+            if self.show_train: self.env.render('human_fast')
 
             if observation['lap_done'] or observation['colision_done'] or self.race_track.check_done(observation):
                 self.planner.done_entry(observation)
 
                 if observation['lap_done']:
-                    print(f"{i}::Lap Complete {lap_counter} -> FinalR: {observation['reward']} -> LapTime {observation['current_laptime']:.2f} -> TotalReward: {self.planner.t_his.rewards[self.planner.t_his.ptr-1]:.2f}")
+                    if self.verbose: print(f"{i}::Lap Complete {lap_counter} -> FinalR: {observation['reward']} -> LapTime {observation['current_laptime']:.2f} -> TotalReward: {self.planner.t_his.rewards[self.planner.t_his.ptr-1]:.2f}")
 
                     lap_counter += 1
                     self.completed_laps += 1
 
                 elif observation['colision_done'] or self.race_track.check_done(observation):
 
-                    print(f"{i}::Lap Crashed -> FinalR: {observation['reward']} -> LapTime {observation['current_laptime']:.2f} -> TotalReward: {self.planner.t_his.rewards[self.planner.t_his.ptr-1]:.2f}")
+                    if self.verbose: print(f"{i}::Lap Crashed -> FinalR: {observation['reward']} -> LapTime {observation['current_laptime']:.2f} -> TotalReward: {self.planner.t_his.rewards[self.planner.t_his.ptr-1]:.2f}")
                     crash_counter += 1
 
                 observation = self.reset_simulation()
