@@ -251,44 +251,73 @@ def get_actuation(pose_theta, lookahead_point, position, lookahead_distance, whe
     steering_angle = np.arctan(wheelbase/radius)
     return speed, steering_angle
 
-class PurePursuit:
-    def __init__(self, conf, run):
-        self.name = run.run_name
+# class PurePursuit:
+#     def __init__(self, conf, run):
+#         self.name = run.run_name
         
-        self.trajectory = Trajectory(run.map_name)
+#         self.trajectory = Trajectory(run.map_name)
+
+#         self.lookahead = conf.lookahead
+#         self.vgain = conf.v_gain
+#         self.v_min_plan = conf.v_min_plan
+#         self.wheelbase =  conf.l_f + conf.l_r
+#         self.max_steer = conf.max_steer
+#         self.vehicle_speed = conf.vehicle_speed
+
+#         path = os.getcwd() + f"/Data/Vehicles/" + run.path  + self.name
+#         init_file_struct(path)
+
+#     def plan(self, obs):
+#         ego_idx = obs['ego_idx']
+#         pose_th = obs['poses_theta'][ego_idx] 
+#         p_x = obs['poses_x'][ego_idx]
+#         p_y = obs['poses_y'][ego_idx]
+#         v_current = obs['linear_vels_x'][ego_idx]
+
+#         pos = np.array([p_x, p_y], dtype=np.float)
+
+#         if v_current < self.v_min_plan:
+#             return np.array([0, self.vehicle_speed]) 
+
+#         lookahead_point = self.trajectory.get_current_waypoint(pos, self.lookahead)
+
+#         speed, steering_angle = get_actuation(pose_th, lookahead_point, pos, self.lookahead, self.wheelbase)
+#         steering_angle = np.clip(steering_angle, -self.max_steer, self.max_steer)
+#         # speed *= self.vgain
+
+#         speed = calculate_speed(steering_angle)
+
+#         # return np.array([steering_angle, self.vehicle_speed])
+#         return np.array([steering_angle, speed])
+
+
+
+class PurePursuit:
+    def __init__(self, conf, test_params):
+        self.name = "PurePursuitPlanner"
+
+
+        self.trajectory = Trajectory(test_params.map_name)
+        # self.trajectory.show_pts()
 
         self.lookahead = conf.lookahead
-        self.vgain = conf.v_gain
         self.v_min_plan = conf.v_min_plan
         self.wheelbase =  conf.l_f + conf.l_r
         self.max_steer = conf.max_steer
         self.vehicle_speed = conf.vehicle_speed
 
-        path = os.getcwd() + f"/Data/Vehicles/" + run.path  + self.name
-        init_file_struct(path)
 
     def plan(self, obs):
-        ego_idx = obs['ego_idx']
-        pose_th = obs['poses_theta'][ego_idx] 
-        p_x = obs['poses_x'][ego_idx]
-        p_y = obs['poses_y'][ego_idx]
-        v_current = obs['linear_vels_x'][ego_idx]
+        state = obs['state']
+        position = state[0:2]
+        theta = state[2]
+        lookahead_point = self.trajectory.get_current_waypoint(position, self.lookahead)
 
-        pos = np.array([p_x, p_y], dtype=np.float)
+        if state[3] < self.v_min_plan:
+            return np.array([0.0, self.vehicle_speed])
 
-        if v_current < self.v_min_plan:
-            return np.array([0, self.vehicle_speed]) 
-
-        lookahead_point = self.trajectory.get_current_waypoint(pos, self.lookahead)
-
-        speed, steering_angle = get_actuation(pose_th, lookahead_point, pos, self.lookahead, self.wheelbase)
+        speed, steering_angle = get_actuation(theta, lookahead_point, position, self.lookahead, self.wheelbase)
         steering_angle = np.clip(steering_angle, -self.max_steer, self.max_steer)
-        # speed *= self.vgain
 
-        speed = calculate_speed(steering_angle)
-
-        # return np.array([steering_angle, self.vehicle_speed])
-        return np.array([steering_angle, speed])
-
-
+        return np.array([steering_angle, self.vehicle_speed])
 

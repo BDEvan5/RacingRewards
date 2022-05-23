@@ -20,8 +20,8 @@ def evaluate_vehicle(env, vehicle, conf, show=False):
                 laptime = obs['lap_times'][0]
 
             if show:
-                # env.render(mode='human')
-                env.render(mode='human_fast')
+                env.render(mode='human')
+                # env.render(mode='human_fast')
  
         # env.sim.agents[0].history.plot_history()
         r = find_conclusion(obs, start)

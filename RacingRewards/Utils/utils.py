@@ -88,16 +88,22 @@ def setup_run_list(run_file):
             run["id"] = run_n
             run["n"] = rep
             run["set_n"] = set_n
-            run['run_name'] = f"{run_dict['reward_name']}_{run['map_name']}_{rep}_{set_n}_{run_n}"
+            run['run_name'] = f"{run_dict['test_name']}_{run['map_name']}_{rep}_{set_n}_{run_n}"
             run['reward_name'] = run_dict['reward_name']
-            run['path'] = f"{run_dict['reward_name']}/"
+            run['path'] = f"{run_dict['test_name']}/"
 
             run_list.append(Namespace(**run))
             run_n += 1
 
+    test_params = {}
+    for key in run_dict.keys():
+        if key != "runs":
+            test_params[key] = run_dict[key]
+    test_params = Namespace(**test_params)
+
     init_reward_struct("Data/Vehicles/" + run_list[0].path)
 
-    return run_list
+    return run_list, test_params
 
 
 

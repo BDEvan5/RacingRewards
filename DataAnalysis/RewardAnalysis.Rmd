@@ -80,3 +80,18 @@ data %>%
   
   
 ```
+
+## Baseline repeat
+
+
+```{r}
+d_table = data %>%
+  filter(reward_name=="BaselineRepeat")%>%
+  select(map_name, path, avg_times, n)%>%
+  pivot_wider(names_from = map_name, values_from = avg_times)%>%
+  arrange(n)
+
+kable(d_table)
+```
+
+
