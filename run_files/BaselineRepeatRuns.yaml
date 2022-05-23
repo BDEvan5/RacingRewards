@@ -1,20 +1,28 @@
-reward_name: "BaselineRepeat"
+# test parameters
+test_name: "SimulationTest"
+# config_filename: "config_file"
 
-n: 10
-set_n: 2
+# Agent params
+n: 1
+set_n: 1
+
+n_train_steps: 20000
+n_test_laps: 10
+
+reward_name: "Progress"
 
 runs:
   # - run: 4
   #   run_name: " "
   #   map_name: "levine_blocked"
 
-  - run: 0
-    run_name: " "
-    map_name: "porto"
-
-  # - run: 1
+  # - run: 0
   #   run_name: " "
-  #   map_name: "columbia_small"
+  #   map_name: "porto"
+
+  - run: 1
+    run_name: " "
+    map_name: "columbia_small"
 
   # - run: 2
   #   run_name: " "
