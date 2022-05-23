@@ -9,6 +9,7 @@ class TrackPtsBase:
         self.map_name = config.map_name
         self.total_s = None
 
+
     def load_center_pts(self):
         track_data = []
         filename = 'maps/' + self.map_name + '_std.csv'
@@ -96,7 +97,13 @@ class DistanceReward(TrackPtsBase):
 
         self.load_center_pts()
         # self.load_reference_pts()
-        self.b_distance = run.b_distance
+        try:
+            self.b_distance = run.b_distance
+        except:
+            self.b_distance = 1
+
+        self.max_distance = 0
+
 
     def __call__(self, state, s_prime):
         prime_pos = np.array([s_prime['poses_x'][0], s_prime['poses_y'][0]])
@@ -104,6 +111,10 @@ class DistanceReward(TrackPtsBase):
         reward = self.get_distance_r(pos, prime_pos, self.b_distance)
 
         reward += s_prime['reward']
+
+        # ss = self.find_s(prime_pos)
+        # if ss < self.max_distance:
+        #     reward = -1
 
         return reward
 
