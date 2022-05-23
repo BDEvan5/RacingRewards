@@ -34,12 +34,13 @@ class BaseVehicle:
         Returns:
             nn_obs: observation vector for neural network
         """
-        ego_idx = obs['ego_idx']
-        v_current = obs['linear_vels_x'][ego_idx]
-        d_current = obs['steering_deltas'][ego_idx]
-        scan = np.array(obs['scans'][ego_idx]) 
+
+        v_current = obs['state'][3]
+        d_current = obs['state'][4]
+        scan = np.array(obs['scan']) 
 
         scan = np.clip(scan/self.range_finder_scale, 0, 1)
+
         cur_v = [v_current/self.max_v]
         cur_d = [d_current/self.max_steer]
 
@@ -87,7 +88,7 @@ class TrainVehicle(BaseVehicle):
         if add_mem_entry:
             self.add_memory_entry(obs, nn_obs)
             
-        if obs['linear_vels_x'][0] < self.v_min_plan:
+        if obs['state'][3] < self.v_min_plan:
             self.action = np.array([0, 7])
             return self.action
 
@@ -103,8 +104,9 @@ class TrainVehicle(BaseVehicle):
 
     def add_memory_entry(self, s_prime, nn_s_prime):
         if self.state is not None:
-            reward = self.calculate_reward(self.state, s_prime)
-    
+            # reward = self.calculate_reward(self.state, s_prime)
+            reward = s_prime['reward']
+            
             self.t_his.add_step_data(reward)
 
             self.agent.replay_buffer.add(self.nn_state, self.nn_act, nn_s_prime, reward, False)
@@ -114,7 +116,8 @@ class TrainVehicle(BaseVehicle):
         To be called when ep is done.
         """
         nn_s_prime = self.transform_obs(s_prime)
-        reward = self.calculate_reward(self.state, s_prime)
+        # reward = self.calculate_reward(self.state, s_prime)
+        reward = s_prime['reward']
 
         self.t_his.add_step_data(reward)
         self.t_his.lap_done(False)
@@ -169,7 +172,7 @@ class TestVehicle(BaseVehicle):
     def plan(self, obs):
         nn_obs = self.transform_obs(obs)
 
-        if obs['linear_vels_x'][0] < self.v_min_plan:
+        if obs['state'][3] < self.v_min_plan:
             self.action = np.array([0, 7])
             return self.action
 

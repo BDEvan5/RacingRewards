@@ -2,12 +2,15 @@ from RacingRewards.RewardSignals.RewardUtils import *
 
 
 # Track base
-class TrackPtsBase:
-    def __init__(self, config) -> None:
+class RaceTrack:
+    def __init__(self, map_name) -> None:
         self.wpts = None
         self.ss = None
-        self.map_name = config.map_name
+        self.map_name = map_name
         self.total_s = None
+
+        self.max_distance = 0
+        self.distance_allowance = 0.3
 
 
     def load_center_pts(self):
@@ -80,43 +83,37 @@ class TrackPtsBase:
 
         return s 
 
-    def get_distance_r(self, pt1, pt2, beta):
-        s = self.find_s(pt1)
-        ss = self.find_s(pt2)
-        ds = ss - s
-        scale_ds = ds / self.total_s
-        r = scale_ds * beta
-        shaped_r = np.clip(r, -0.5, 0.5)
+    def check_done(self, observation):
+        position = observation['state'][0:2]
+        s = self.find_s(position)
 
-        return shaped_r
+        if s < self.max_distance - self.distance_allowance:
+            return -1 # made negative progress
+        self.max_distance = min(self.max_distance, s)
 
 
-class DistanceReward(TrackPtsBase):
-    def __init__(self, run) -> None:
-        TrackPtsBase.__init__(self, run)
+def get_base_reward(observation):
+    if observation['lap_done']:
+        return 1  # complete
+    if observation['colision_done']:
+        return -1 # crash
 
-        self.load_center_pts()
-        # self.load_reference_pts()
-        try:
-            self.b_distance = run.b_distance
-        except:
-            self.b_distance = 1
+    return 0 # intermediate.
 
-        self.max_distance = 0
+class DistanceReward():
+    def __init__(self, race_track: RaceTrack) -> None:
+        self.race_track = race_track
 
-    
+    def __call__(self, observation, prev_obs):
+        if prev_obs is None: return 0
 
-    def __call__(self, state, s_prime):
-        prime_pos = np.array([s_prime['poses_x'][0], s_prime['poses_y'][0]])
-        pos = np.array([state['poses_x'][0], state['poses_y'][0]])
-        reward = self.get_distance_r(pos, prime_pos, self.b_distance)
+        position = observation['state'][0:2]
+        prev_position = prev_obs['state'][0:2]
 
-        reward += s_prime['reward']
+        s = self.race_track.find_s(position)
+        ss = self.race_track.find_s(prev_position)
+        reward = (ss - s) / self.race_track.total_s
 
-        # ss = self.find_s(prime_pos)
-        # if ss < self.max_distance:
-        #     reward = -1
+        reward += get_base_reward(observation)
 
         return reward
-
-

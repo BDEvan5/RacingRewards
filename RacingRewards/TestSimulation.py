@@ -5,10 +5,12 @@ from RacingRewards.Planners.AgentPlanner import TestVehicle, TrainVehicle
 
 import numpy as np
 import time
+from RacingRewards.Reward import RaceTrack, DistanceReward
+
 
 class TestSimulation():
-    def __init__(self):
-        self.run_data, self.test_params = setup_run_list("BaselineRepeatRuns")
+    def __init__(self, run_file: str):
+        self.run_data, self.test_params = setup_run_list(run_file)
         self.conf = load_conf("config_file")
 
         self.env = None
@@ -17,26 +19,25 @@ class TestSimulation():
         self.n_test_laps = None
         self.lap_times = None
         self.completed_laps = None
+        self.prev_obs = None
 
-        self.run_simulations()
+        self.race_track = None
 
-    def run_simulations(self):
+    def run_testing_evaluation(self):
         for run in self.run_data:
-            self.create_simulation(run)
+            self.env = F110Env(map=run.map_name)
+
+            # self.planner = TestVehicle(self.test_params, self.conf)
+            self.planner = PurePursuit(self.conf, run)
+
+            self.n_test_laps = self.test_params.n_test_laps
+            self.lap_times = []
+            self.completed_laps = 0
+
             self.run_testing()
 
-    def create_simulation(self, run):
-        self.env = F110Env(map=run.map_name)
-
-        # self.planner = TestVehicle(self.test_params, self.conf)
-        self.planner = PurePursuit(self.conf, run)
-
-        self.n_test_laps = self.test_params.n_test_laps
-        self.lap_times = []
-        self.completed_laps = 0
-
-
     def run_testing(self):
+        assert self.env != None, "No environment created"
         start_time = time.time()
 
         for i in range(self.n_test_laps):
@@ -73,6 +74,19 @@ class TestSimulation():
         return observation
 
     def build_observation(self, obs, done):
+        """Build observation
+
+        Returns 
+            state:
+                [0]: x
+                [1]: y
+                [2]: yaw
+                [3]: v
+                [4]: steering
+            scan:
+                Lidar scan beams 
+            
+        """
         observation = {}
         observation['current_laptime'] = obs['lap_times'][0]
         observation['scan'] = obs['scans'][0] #TODO: introduce slicing here
@@ -98,6 +112,8 @@ class TestSimulation():
             observation['reward'] = 1.0
             observation['lap_done'] = True
 
+        observation['reward'] = self.reward(observation, self.prev_obs)
+
         return observation
 
     def reset_simulation(self):
@@ -105,20 +121,91 @@ class TestSimulation():
         obs, step_reward, done, _ = self.env.reset(reset_pose)
 
         observation = self.build_observation(obs, done)
+        self.prev_obs = observation
 
         return observation
 
+class TrainSimulation(TestSimulation):
+    def __init__(self, run_file):
+        super().__init__(run_file)
+
+        self.n_train_steps = self.test_params.n_train_steps
+        self.reward = None
+        self.previous_observation = None
+
+    def run_training_evaluation(self):
+        for run in self.run_data:
+            self.env = F110Env(map=run.map_name)
+            self.race_track = RaceTrack(run.map_name)
+            self.race_track.load_center_pts()
+            self.reward = DistanceReward(self.race_track)
+
+            self.planner = TrainVehicle(run, self.conf)
+
+
+            self.n_test_laps = self.test_params.n_test_laps
+            self.lap_times = []
+            self.completed_laps = 0
+
+            self.run_training()
+            self.run_testing()
+
+    def run_training(self):
+        assert self.env != None, "No environment created"
+        start_time = time.time()
+        print(f"Starting Baseline Training: {self.planner.name}")
+
+        lap_counter, crash_counter = 0, 0
+        observation = self.reset_simulation()
+
+        for i in range(self.n_train_steps):
+            self.prev_obs = observation
+            action = self.planner.plan(observation)
+            observation = self.run_step(action)
+
+            self.planner.agent.train(2)
+
+            self.env.render('human_fast')
+
+            if observation['lap_done'] or observation['colision_done'] or self.race_track.check_done(observation):
+                self.planner.done_entry(observation)
+
+                if observation['lap_done']:
+                    print(f"{i}::Lap Complete {lap_counter} -> FinalR: {observation['reward']} -> LapTime {observation['current_laptime']:.2f} -> TotalReward: {self.planner.t_his.rewards[self.planner.t_his.ptr-1]:.2f}")
+
+                    lap_counter += 1
+                    self.completed_laps += 1
+
+                elif observation['colision_done'] or self.race_track.check_done(observation):
+
+                    print(f"{i}::Lap Crashed -> FinalR: {observation['reward']} -> LapTime {observation['current_laptime']:.2f} -> TotalReward: {self.planner.t_his.rewards[self.planner.t_his.ptr-1]:.2f}")
+                    crash_counter += 1
+
+                observation = self.reset_simulation()
+                    
+            
+        self.planner.t_his.print_update(True)
+        self.planner.t_his.save_csv_data()
+        self.planner.agent.save(self.planner.path)
+
+        train_time = time.time() - start_time
+        print(f"Finished Training: {self.planner.name} in {train_time} seconds")
+        print(f"Crashes: {crash_counter}")
+
+
+        print(f"Training finished in: {time.time() - start_time}")
 
 
 
 def main():
-    sim = TestSimulation()
+    # sim = TestSimulation("BaselineRepeatRuns")
+    # sim.run_testing_evaluation()
 
+    sim = TrainSimulation("BaselineRepeatRuns")
+    sim.run_training_evaluation()
 
 if __name__ == '__main__':
     main()
-
-
 
 
 
