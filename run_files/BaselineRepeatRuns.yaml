@@ -3,13 +3,20 @@ test_name: "SimulationTest"
 # config_filename: "config_file"
 
 # Agent params
-n: 1
-set_n: 1
+n: 10
+set_n: 4
 
-n_train_steps: 20000
+n_train_steps: 30000
 n_test_laps: 10
 
 reward_name: "Progress"
+
+show_train: True
+# show_train: False
+show_test: True
+# show_test: False
+verbose: True
+# verbose: False
 
 runs:
   # - run: 4

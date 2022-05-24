@@ -10,7 +10,7 @@ class RaceTrack:
         self.total_s = None
 
         self.max_distance = 0
-        self.distance_allowance = 0.3
+        self.distance_allowance = 1
 
 
     def load_center_pts(self):
@@ -87,9 +87,10 @@ class RaceTrack:
         position = observation['state'][0:2]
         s = self.find_s(position)
 
-        if s < self.max_distance - self.distance_allowance:
+        if s <= (self.max_distance - self.distance_allowance) and self.max_distance < 0.8*self.total_s and s > 0.1:
+            # check if I went backwards, unless the max distance is almost finished and that it isn't starting
             return -1 # made negative progress
-        self.max_distance = min(self.max_distance, s)
+        self.max_distance = max(self.max_distance, s)
 
 
 def get_base_reward(observation):
@@ -110,8 +111,8 @@ class DistanceReward():
         position = observation['state'][0:2]
         prev_position = prev_obs['state'][0:2]
 
-        s = self.race_track.find_s(position)
-        ss = self.race_track.find_s(prev_position)
+        s = self.race_track.find_s(prev_position)
+        ss = self.race_track.find_s(position)
         reward = (ss - s) / self.race_track.total_s
 
         reward += get_base_reward(observation)

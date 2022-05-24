@@ -228,6 +228,7 @@ class F110Env(gym.Env):
         # TODO: switch to maybe s-based
         left_t = 2
         right_t = 2
+        min_lap_time = 5
         
         poses_x = np.array(self.poses_x)-self.start_xs
         poses_y = np.array(self.poses_y)-self.start_ys
@@ -243,7 +244,7 @@ class F110Env(gym.Env):
         # closes = dist2 <= 0.02
         closes = np.sqrt(dist2) <= 0.1
         for i in range(self.num_agents):
-            if closes[i] and not self.near_starts[i] and self.current_time > 10:
+            if closes[i] and not self.near_starts[i] and self.current_time > min_lap_time:
                 self.near_starts[i] = True
                 self.toggle_list[i] += 1
             elif not closes[i] and self.near_starts[i]:
@@ -253,11 +254,11 @@ class F110Env(gym.Env):
             if self.toggle_list[i] < 4:
                 self.lap_times[i] = self.current_time
         
-        done = (self.collisions[self.ego_idx]) or (np.all(self.toggle_list >= 2) and self.current_time > 10)
+        done = (self.collisions[self.ego_idx]) or (np.all(self.toggle_list >= 2) and self.current_time > min_lap_time)
         # This number (2) is 2x the number of laps desired
         
         # done = done and self.current_time > 10 #! this is a temporary hack for the porto map
-        if self.current_time < 10:
+        if self.current_time < min_lap_time:
             self.lap_counts[0] = 0
 
         # if done:

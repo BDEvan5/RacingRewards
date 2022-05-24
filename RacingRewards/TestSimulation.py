@@ -24,9 +24,9 @@ class TestSimulation():
         self.race_track = None
 
         # flags 
-        self.show_test = False
-        self.show_train = False
-        self.verbose = False
+        self.show_test = self.test_params.show_test
+        self.show_train = self.test_params.show_train
+        self.verbose = self.test_params.verbose
 
     def run_testing_evaluation(self):
         for run in self.run_data:
@@ -58,13 +58,13 @@ class TestSimulation():
                 observation = self.run_step(action)
                 if self.show_test: self.env.render('human_fast')
 
-                if observation['lap_done']:
-                    if self.verbose: print(f"Lap {i} Complete in time: {observation['current_laptime']}")
-                    self.lap_times.append(observation['current_laptime'])
-                    self.completed_laps += 1
+            if observation['lap_done']:
+                if self.verbose: print(f"Lap {i} Complete in time: {observation['current_laptime']}")
+                self.lap_times.append(observation['current_laptime'])
+                self.completed_laps += 1
 
-                if observation['colision_done']:
-                    if self.verbose: print(f"Lap {i} Crashed in time: {observation['current_laptime']}")
+            if observation['colision_done']:
+                if self.verbose: print(f"Lap {i} Crashed in time: {observation['current_laptime']}")
                     
         print(f"Tests are finished in: {time.time() - start_time}")
 
@@ -130,10 +130,11 @@ class TestSimulation():
 
         observation['reward'] = 0.0
         if done and obs['lap_counts'][0] == 0: 
-            observation['reward'] = -1.0
             observation['colision_done'] = True
+        if self.race_track.check_done(observation) and obs['lap_counts'][0] == 0:
+            observation['colision_done'] = True
+
         if obs['lap_counts'][0] == 1:
-            observation['reward'] = 1.0
             observation['lap_done'] = True
 
         observation['reward'] = self.reward(observation, self.prev_obs)
@@ -146,8 +147,10 @@ class TestSimulation():
 
         observation = self.build_observation(obs, done)
         self.prev_obs = observation
+        self.race_track.max_distance = 0.0
 
         return observation
+
 
 class TrainSimulation(TestSimulation):
     def __init__(self, run_file):
@@ -183,6 +186,8 @@ class TrainSimulation(TestSimulation):
 
             save_conf_dict(run_dict)
 
+            self.env.close_rendering()
+
 
     def run_training(self):
         assert self.env != None, "No environment created"
@@ -201,7 +206,7 @@ class TrainSimulation(TestSimulation):
 
             if self.show_train: self.env.render('human_fast')
 
-            if observation['lap_done'] or observation['colision_done'] or self.race_track.check_done(observation):
+            if observation['lap_done'] or observation['colision_done']:
                 self.planner.done_entry(observation)
 
                 if observation['lap_done']:

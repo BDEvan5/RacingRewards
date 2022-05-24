@@ -73,6 +73,10 @@ class TrackPtsBase:
 
         min_dist_segment = np.argmin(dists)
         dist_from_cur_pt = dists[min_dist_segment]
+
+        if dist_from_cur_pt> 1:
+            return -50
+
         if dist_from_cur_pt > 1: #more than 2m from centerline
             return self.ss[min_dist_segment] - dist_from_cur_pt # big makes it go back
 
