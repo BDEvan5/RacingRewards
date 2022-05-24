@@ -18,19 +18,29 @@ class Network(nn.Module):
     def __init__(self, obs_space, action_space, h_size):
         super(Network, self).__init__()
         self.fc1 = nn.Linear(obs_space, h_size)
+        self.fc2 = nn.Linear(h_size, h_size)
         self.fc_pi = nn.Linear(h_size, action_space)
         self.fc_v  = nn.Linear(h_size,1)
 
     def pi(self, x, softmax_dim = 0):
         x = F.relu(self.fc1(x))
+        x = F.relu(self.fc2(x))
         x = self.fc_pi(x)
         prob = F.softmax(x, dim=softmax_dim)
         return prob
     
     def v(self, x):
         x = F.relu(self.fc1(x))
+        x = F.relu(self.fc2(x))
         v = self.fc_v(x)
         return v
+
+    def get_action(self, nn_obs):
+        prob = self.pi(torch.from_numpy(nn_obs).float())
+        m = torch.distributions.Categorical(prob)
+        nn_action = m.sample().item()
+
+        return nn_action
 
 class PPO:
     def __init__(self, obs_space, action_space, name):
@@ -117,14 +127,14 @@ class PPO:
     def load(self, directory="./saves"):
         filename = self.name
 
-        self.network = torch.load('%s/%s_network.pth' % (directory, filename))
+        self.network = torch.load('%s/%s_model.pth' % (directory, filename))
 
         print(f"Agent Loaded: {filename}")
 
     def save(self, directory="./saves"):
         filename = self.name
 
-        torch.save(self.network, '%s/%s_network.pth' % (directory, filename))
+        torch.save(self.network, '%s/%s_model.pth' % (directory, filename))
 
         # print(f"Agent Saved: {filename}")
 

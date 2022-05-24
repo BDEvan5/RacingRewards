@@ -74,7 +74,7 @@ class TrainVehicleDiscrete(BaseVehicleDiscrete):
         self.agent = PPO(state_space, self.n_steer, run.run_name)
         # self.agent = DQN(state_space, self.n_steer, run.run_name)
         # self.agent.create_agent(sim_conf.h_size)
-        self.agent.create_agent(256)
+        self.agent.create_agent(100)
 
         self.state = None
         self.nn_state = None
@@ -104,7 +104,6 @@ class TrainVehicleDiscrete(BaseVehicleDiscrete):
 
     def add_memory_entry(self, s_prime, nn_s_prime):
         if self.state is not None:
-            # reward = self.calculate_reward(self.state, s_prime)
             reward = s_prime['reward']
             
             self.t_his.add_step_data(reward)
@@ -167,8 +166,7 @@ class TestVehicleDiscrete(BaseVehicleDiscrete):
         super().__init__(run.run_name, sim_conf)
         self.path = sim_conf.vehicle_path + run.path + run.run_name 
 
-        self.network = torch.load(self.path + '/' + run.run_name + "_network.pth")
-        # self.model = torch.load(self.path + '/' + run.run_name + "_model.pth")
+        self.model = torch.load(self.path + '/' + run.run_name + "_model.pth")
 
         print(f"Agent loaded: {run.run_name}")
 
@@ -179,10 +177,7 @@ class TestVehicleDiscrete(BaseVehicleDiscrete):
             self.action = np.array([0, 7])
             return self.action
 
-
-        obs_t = torch.from_numpy(nn_obs).float()
-        out = self.model.forward(obs_t)
-        nn_action = out.argmax().item()
+        nn_action = self.model.get_action(nn_obs)
 
         self.nn_act = nn_action
 

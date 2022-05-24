@@ -85,7 +85,14 @@ class Qnet(nn.Module):
         x = F.relu(self.fc2(x))
         x = self.fc3(x)
         return x
-      
+
+    def get_action(self, nn_obs):
+        obs_t = torch.from_numpy(nn_obs).float()
+        out = self.forward(obs_t)
+        nn_action = out.argmax().item()
+
+        return nn_action
+
 class DQN:
     def __init__(self, obs_space, action_space, name="Agent"):
         self.obs_space = obs_space
@@ -121,6 +128,9 @@ class DQN:
         obs_t = torch.from_numpy(obs).float()
         out = self.model.forward(obs_t)
         return out.argmax().item()
+
+    def put_action_data(self, state, action, s_p, reward, done):
+        self.replay_buffer.add(state, action, s_p, reward, done)
 
     def train(self):
         n_train = 2
