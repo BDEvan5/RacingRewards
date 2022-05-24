@@ -40,7 +40,7 @@ random_seed: 1000          # Seed for NumPy randomness
 # PurePursuit planner values
 lookahead: 0.82
 v_gain: 0.9
-v_min_plan: 1            # minimum speed for selecting a steering angle to prevent instability
+v_min_plan: 0.8            # minimum speed for selecting a steering angle to prevent instability
 
 # test params
 test_n: 10              # number of test episodes to run

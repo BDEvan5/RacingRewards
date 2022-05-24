@@ -91,6 +91,7 @@ def setup_run_list(run_file):
             run['run_name'] = f"{run_dict['test_name']}_{run['map_name']}_{rep}_{set_n}_{run_n}"
             run['reward_name'] = run_dict['reward_name']
             run['path'] = f"{run_dict['test_name']}/"
+            run['test_name'] = f"{run_dict['test_name']}"
 
             run_list.append(Namespace(**run))
             run_n += 1

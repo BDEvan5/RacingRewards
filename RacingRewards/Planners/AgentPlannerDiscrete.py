@@ -1,5 +1,6 @@
 import numpy as np 
-from RacingRewards.Utils.TD3 import TD3
+from RacingRewards.Utils.DQN import DQN
+from RacingRewards.Utils.PPO import PPO
 from RacingRewards.Utils.HistoryStructs import TrainHistory
 from RacingRewards.Utils.RewardFunctions import *
 import torch
@@ -11,7 +12,7 @@ from matplotlib import pyplot as plt
 
 
 
-class BaseVehicle: 
+class BaseVehicleDiscrete: 
     def __init__(self, agent_name, sim_conf):
         self.name = agent_name
         self.n_beams = sim_conf.n_beams
@@ -23,6 +24,15 @@ class BaseVehicle:
         self.loop_counter = 0
         self.action = None
         self.v_min_plan =  sim_conf.v_min_plan
+
+        n_steer = 5
+        self.n_steer = n_steer
+        self.actions = np.zeros((n_steer, 2))
+        self.actions[:, 0] = np.linspace(-0.2, 0.2, n_steer)
+        self.actions[:, 1] = 1
+
+        print(self.actions)
+        print("Pause")
 
     def transform_obs(self, obs):
         """
@@ -49,28 +59,22 @@ class BaseVehicle:
         return nn_obs
 
     def transform_action(self, nn_action):
-        steering_angle = nn_action[0] * self.max_steer
-        # this is to ensure that it doesn't stay still
-
-        # speed = (nn_action[1] + 1) * (self.max_v  / 2 - 0.5) + 1
-
-        # speed = calculate_speed(steering_angle)
-        speed = 1
-        action = np.array([steering_angle, speed])
-        # action = np.array([steering_angle, self.speed])
+        action = self.actions[nn_action]
 
         return action
 
 
-class TrainVehicle(BaseVehicle):
-    def __init__(self, run, sim_conf, load=False):
+class TrainVehicleDiscrete(BaseVehicleDiscrete):
+    def __init__(self, run, sim_conf):
         super().__init__(run.run_name, sim_conf)
 
         self.path = sim_conf.vehicle_path + run.path + run.run_name 
-        if not load: init_file_struct(self.path)
+        init_file_struct(self.path)
         state_space = 2 + self.n_beams
-        self.agent = TD3(state_space, 1, 1, run.run_name)
-        self.agent.try_load(load, sim_conf.h_size, self.path)
+        self.agent = PPO(state_space, self.n_steer, run.run_name)
+        # self.agent = DQN(state_space, self.n_steer, run.run_name)
+        # self.agent.create_agent(sim_conf.h_size)
+        self.agent.create_agent(256)
 
         self.state = None
         self.nn_state = None
@@ -78,10 +82,6 @@ class TrainVehicle(BaseVehicle):
         self.action = None
 
         self.t_his = TrainHistory(run, sim_conf)
-
-        self.calculate_reward = None
-        # self.calculate_reward = RefDistanceReward(sim_conf) 
-        # self.calculate_reward = RefCTHReward(sim_conf) 
 
     def plan(self, obs, add_mem_entry=True):
         nn_obs = self.transform_obs(obs)
@@ -109,7 +109,8 @@ class TrainVehicle(BaseVehicle):
             
             self.t_his.add_step_data(reward)
 
-            self.agent.replay_buffer.add(self.nn_state, self.nn_act, nn_s_prime, reward, False)
+            # self.agent.replay_buffer.add(self.nn_state, self.nn_act, nn_s_prime, reward, False)
+            self.agent.put_action_data(self.nn_state, self.nn_act, nn_s_prime, reward, False)
 
     def done_entry(self, s_prime):
         """
@@ -127,7 +128,8 @@ class TrainVehicle(BaseVehicle):
         self.agent.save(self.path)
         self.state = None
 
-        self.agent.replay_buffer.add(self.nn_state, self.nn_act, nn_s_prime, reward, True)
+        # self.agent.replay_buffer.add(self.nn_state, self.nn_act, nn_s_prime, reward, True)
+        self.agent.put_action_data(self.nn_state, self.nn_act, nn_s_prime, reward, True)
 
     def intervention_entry(self, s_prime):
         """
@@ -151,7 +153,7 @@ class TrainVehicle(BaseVehicle):
             self.agent.save(self.path)
 
 
-class TestVehicle(BaseVehicle):
+class TestVehicleDiscrete(BaseVehicleDiscrete):
     def __init__(self, run, sim_conf):
         """
         Testing vehicle using the reference modification navigation stack
@@ -165,7 +167,8 @@ class TestVehicle(BaseVehicle):
         super().__init__(run.run_name, sim_conf)
         self.path = sim_conf.vehicle_path + run.path + run.run_name 
 
-        self.actor = torch.load(self.path + '/' + run.run_name + "_actor.pth")
+        self.network = torch.load(self.path + '/' + run.run_name + "_network.pth")
+        # self.model = torch.load(self.path + '/' + run.run_name + "_model.pth")
 
         print(f"Agent loaded: {run.run_name}")
 
@@ -176,8 +179,11 @@ class TestVehicle(BaseVehicle):
             self.action = np.array([0, 7])
             return self.action
 
-        nn_obs = torch.FloatTensor(nn_obs.reshape(1, -1))
-        nn_action = self.actor(nn_obs).data.numpy().flatten()
+
+        obs_t = torch.from_numpy(nn_obs).float()
+        out = self.model.forward(obs_t)
+        nn_action = out.argmax().item()
+
         self.nn_act = nn_action
 
         self.action = self.transform_action(nn_action)

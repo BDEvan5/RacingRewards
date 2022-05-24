@@ -2,6 +2,7 @@ from RacingRewards.f110_gym.f110_env import F110Env
 from RacingRewards.Utils.utils import *
 from RacingRewards.Planners.PurePursuit import PurePursuit
 from RacingRewards.Planners.AgentPlanner import TestVehicle, TrainVehicle
+from RacingRewards.Planners.AgentPlannerDiscrete import TestVehicleDiscrete, TrainVehicleDiscrete
 
 import numpy as np
 import time
@@ -169,13 +170,15 @@ class TrainSimulation(TestSimulation):
             self.race_track.load_center_pts()
             self.reward = DistanceReward(self.race_track)
 
-            self.planner = TrainVehicle(run, self.conf)
+            self.planner = TrainVehicleDiscrete(run, self.conf)
+            # self.planner = TrainVehicle(run, self.conf)
             self.completed_laps = 0
 
             self.run_training()
 
             #Test
-            self.planner = TestVehicle(run, self.conf)
+            # self.planner = TestVehicle(run, self.conf)
+            self.planner = TestVehicleDiscrete(run, self.conf)
             self.n_test_laps = self.test_params.n_test_laps
             self.lap_times = []
             self.completed_laps = 0
@@ -202,7 +205,7 @@ class TrainSimulation(TestSimulation):
             action = self.planner.plan(observation)
             observation = self.run_step(action)
 
-            self.planner.agent.train(2)
+            self.planner.agent.train()
 
             if self.show_train: self.env.render('human_fast')
 
@@ -220,6 +223,7 @@ class TrainSimulation(TestSimulation):
                     if self.verbose: print(f"{i}::Lap Crashed -> FinalR: {observation['reward']} -> LapTime {observation['current_laptime']:.2f} -> TotalReward: {self.planner.t_his.rewards[self.planner.t_his.ptr-1]:.2f}")
                     crash_counter += 1
 
+                # print(f"exp: {self.planner.agent.exploration_rate}")
                 observation = self.reset_simulation()
                     
             
