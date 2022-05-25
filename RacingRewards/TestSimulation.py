@@ -139,11 +139,11 @@ class TestSimulation():
             if self.race_track.check_done(observation) and obs['lap_counts'][0] == 0:
                 observation['colision_done'] = True
             
-            observation['reward'] = self.reward(observation, self.prev_obs)
 
         if obs['lap_counts'][0] == 1:
             observation['lap_done'] = True
 
+        observation['reward'] = self.reward(observation, self.prev_obs)
 
         return observation
 
@@ -182,16 +182,20 @@ class TrainSimulation(TestSimulation):
             # self.race_track.plot_wpts()
             self.reward = DistanceReward(self.race_track)
 
-            # self.planner = TrainVehicleDiscrete(run, self.conf)
-            self.planner = TrainVehicle(run, self.conf)
+            if run.discrete: self.planner = TrainVehicleDiscrete(run, self.conf)
+            else: self.planner = TrainVehicle(run, self.conf)
             self.completed_laps = 0
 
             self.run_training()
 
             #Test
-            self.planner = TestVehicle(run, self.conf)
-            # self.planner = TestVehicleDiscrete(run, self.conf)
+            # 
+            if run.discrete: self.planner = TestVehicleDiscrete(run, self.conf) 
+            else: 
+                self.planner = TestVehicle(run, self.conf)
+
             self.n_test_laps = self.test_params.n_test_laps
+
             self.lap_times = []
             self.completed_laps = 0
 

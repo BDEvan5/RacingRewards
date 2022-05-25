@@ -2,11 +2,19 @@
 test_name: "AlgorithmTests"
 # config_filename: "config_file"
 
-test_msg: "Testing with TD3, velocity=2"
-set_n: 1
+# test_msg: "Testing with TD3, velocity=2"
+# set_n: 1
+# discrete: False
+
+# test_msg: "Testing with PPO, velocity=2"
+# set_n: 2
+# discrete: True
 
 
-n: 3
+test_msg: "Testing with velocity=2; both algs"
+set_n: 3
+
+n: 10
 
 # Agent params
 n_train_steps: 30000
@@ -14,8 +22,9 @@ n_test_laps: 10
 
 reward_name: "Progress"
 
-# show_train: True
-show_train: False
+
+show_train: True
+# show_train: False
 # show_train: False
 show_test: True
 # show_test: False
@@ -26,30 +35,45 @@ runs:
   - run: 4
     run_name: " "
     map_name: "levine_blocked"
+    discrete: False
 
-  # - run: 0
-  #   run_name: " "
-  #   map_name: "porto"
+
+  - run: 4
+    run_name: " "
+    map_name: "levine_blocked"
+    discrete: True
+
+
 
   - run: 1
     run_name: " "
     map_name: "example_map"
+    discrete: False
 
   - run: 1
     run_name: " "
     map_name: "columbia_small"
-
-  # - run: 1
-  #   run_name: " "
-  #   map_name: "race_track"
-
-  # - run: 2
-  #   run_name: " "
-  #   map_name: "berlin"
+    discrete: False
 
   - run: 3
     run_name: " "
     map_name: "f1_aut_wide"
+    discrete: False
 
+
+  - run: 1
+    run_name: " "
+    map_name: "example_map"
+    discrete: True
+
+  - run: 1
+    run_name: " "
+    map_name: "columbia_small"
+    discrete: True
+
+  - run: 3
+    run_name: " "
+    map_name: "f1_aut_wide"
+    discrete: True
 
 

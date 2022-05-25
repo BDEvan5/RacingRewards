@@ -25,11 +25,11 @@ class BaseVehicleDiscrete:
         self.action = None
         self.v_min_plan =  sim_conf.v_min_plan
 
-        n_steer = 9
+        n_steer = 5
         self.n_steer = n_steer
         self.actions = np.zeros((n_steer, 2))
         self.actions[:, 0] = np.linspace(-0.4, 0.4, n_steer)
-        self.actions[:, 1] = 1
+        self.actions[:, 1] = 2
 
         print(self.actions)
         print("Pause")

@@ -127,3 +127,25 @@ data %>%
 
 ```
 
+
+## Algorithm Test
+```{r}
+d_table = data %>%
+  filter(test_name=="AlgorithmTests" & n==0)%>%
+  select(map_name, path, avg_times, set_n)%>%
+  pivot_wider(names_from = map_name, values_from = avg_times)%>%
+  arrange(set_n)
+
+kable(d_table)
+```
+
+```{r}
+data %>%
+  filter(test_name=="AlgorithmTests")%>%
+  select(map_name, path, avg_times, n)%>%
+  # pivot_wider(names_from = map_name, values_from = avg_times)%>%
+  ggplot(aes(x=map_name, y=avg_times))+
+  geom_boxplot()
+
+
+```
