@@ -265,37 +265,13 @@ def get_actuation(pose_theta, lookahead_point, position, lookahead_distance, whe
 #         self.vehicle_speed = conf.vehicle_speed
 
 #         path = os.getcwd() + f"/Data/Vehicles/" + run.path  + self.name
-#         init_file_struct(path)
-
-#     def plan(self, obs):
-#         ego_idx = obs['ego_idx']
-#         pose_th = obs['poses_theta'][ego_idx] 
-#         p_x = obs['poses_x'][ego_idx]
-#         p_y = obs['poses_y'][ego_idx]
-#         v_current = obs['linear_vels_x'][ego_idx]
-
-#         pos = np.array([p_x, p_y], dtype=np.float)
-
-#         if v_current < self.v_min_plan:
-#             return np.array([0, self.vehicle_speed]) 
-
-#         lookahead_point = self.trajectory.get_current_waypoint(pos, self.lookahead)
-
-#         speed, steering_angle = get_actuation(pose_th, lookahead_point, pos, self.lookahead, self.wheelbase)
-#         steering_angle = np.clip(steering_angle, -self.max_steer, self.max_steer)
-#         # speed *= self.vgain
-
-#         speed = calculate_speed(steering_angle)
-
-#         # return np.array([steering_angle, self.vehicle_speed])
-#         return np.array([steering_angle, speed])
-
 
 
 class PurePursuit:
     def __init__(self, conf, test_params):
-        self.name = "PurePursuitPlanner"
-
+        self.name = test_params.run_name
+        path = os.getcwd() + f"/Data/Vehicles/" + test_params.path  + self.name
+        init_file_struct(path)
 
         self.trajectory = Trajectory(test_params.map_name)
         # self.trajectory.show_pts()
@@ -305,6 +281,7 @@ class PurePursuit:
         self.wheelbase =  conf.l_f + conf.l_r
         self.max_steer = conf.max_steer
         self.vehicle_speed = conf.vehicle_speed
+        # self.vehicle_speed = conf.vehicle_speed
 
 
     def plan(self, obs):

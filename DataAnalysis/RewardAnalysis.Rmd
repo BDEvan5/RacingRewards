@@ -105,10 +105,10 @@ data %>%
 
 ```
 
-## Simulation Test
+## Speed Test
 ```{r}
 d_table = data %>%
-  filter(path=="SimulationTest/"&set_n==4)%>%
+  filter(test_name=="SpeedTests")%>%
   select(map_name, path, avg_times, n)%>%
   pivot_wider(names_from = map_name, values_from = avg_times)%>%
   arrange(n)
@@ -118,7 +118,7 @@ kable(d_table)
 
 ```{r}
 data %>%
-  filter(path=="SimulationTest/")%>%
+  filter(test_name=="SpeedTests")%>%
   select(map_name, path, avg_times, n)%>%
   # pivot_wider(names_from = map_name, values_from = avg_times)%>%
   ggplot(aes(x=map_name, y=avg_times))+

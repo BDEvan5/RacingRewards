@@ -1,4 +1,5 @@
-reward_name: "Baseline"
+test_name: "Baseline"
+reward_name: "none"
 
 n: 1
 set_n: 6

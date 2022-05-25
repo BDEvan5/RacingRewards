@@ -35,8 +35,8 @@ class TestSimulation():
             self.env = F110Env(map=run.map_name)
             self.map_name = run.map_name
 
-            self.planner = TestVehicle(run, self.conf)
-            # self.planner = PurePursuit(self.conf, run)
+            # self.planner = TestVehicle(run, self.conf)
+            self.planner = PurePursuit(self.conf, run)
 
             self.n_test_laps = self.test_params.n_test_laps
             self.lap_times = []
@@ -48,6 +48,7 @@ class TestSimulation():
 
             save_conf_dict(run_dict)
 
+            self.env.close_rendering()
 
     def run_testing(self):
         assert self.env != None, "No environment created"
@@ -134,13 +135,15 @@ class TestSimulation():
         observation['reward'] = 0.0
         if done and obs['lap_counts'][0] == 0: 
             observation['colision_done'] = True
-        if self.race_track.check_done(observation) and obs['lap_counts'][0] == 0:
-            observation['colision_done'] = True
+        if self.race_track is not None:
+            if self.race_track.check_done(observation) and obs['lap_counts'][0] == 0:
+                observation['colision_done'] = True
+            
+            observation['reward'] = self.reward(observation, self.prev_obs)
 
         if obs['lap_counts'][0] == 1:
             observation['lap_done'] = True
 
-        observation['reward'] = self.reward(observation, self.prev_obs)
 
         # if abs(observation['reward']) > 0.5:
         #     print(f"Reward: {observation['reward']}")
@@ -157,7 +160,8 @@ class TestSimulation():
 
         observation = self.build_observation(obs, done)
         self.prev_obs = observation
-        self.race_track.max_distance = 0.0
+        if self.race_track is not None:
+            self.race_track.max_distance = 0.0
 
         return observation
 
@@ -252,7 +256,7 @@ class TrainSimulation(TestSimulation):
 
 
 def main():
-    # sim = TestSimulation("BaselineRepeatRuns")
+    # sim = TestSimulation("BenchmarkRuns")
     # sim.run_testing_evaluation()
 
     sim = TrainSimulation("BaselineRepeatRuns")

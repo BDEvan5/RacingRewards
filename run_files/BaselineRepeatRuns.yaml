@@ -2,17 +2,28 @@
 test_name: "SpeedTests"
 # config_filename: "config_file"
 
-# Agent params
-n: 2
-set_n: 1
+# test_msg: "Testing with velocity=1"
+# set_n: 1
 
+# test_msg: "Testing with velocity=2"
+# set_n: 2
+
+test_msg: "Testing with agent velocity"
+set_n: 3
+
+# test_msg: "Testing with calculate velocity"
+# set_n: 4
+
+n: 1
+
+# Agent params
 n_train_steps: 30000
 n_test_laps: 10
 
 reward_name: "Progress"
 
-show_train: True
-# show_train: False
+# show_train: True
+show_train: False
 show_test: True
 # show_test: False
 verbose: True
@@ -27,13 +38,13 @@ runs:
   #   run_name: " "
   #   map_name: "porto"
 
-  # - run: 1
-  #   run_name: " "
-  #   map_name: "example_map"
+  - run: 1
+    run_name: " "
+    map_name: "example_map"
 
-  # - run: 1
-  #   run_name: " "
-  #   map_name: "columbia_small"
+  - run: 1
+    run_name: " "
+    map_name: "columbia_small"
 
   # - run: 1
   #   run_name: " "
@@ -43,9 +54,9 @@ runs:
   #   run_name: " "
   #   map_name: "berlin"
 
-  - run: 3
-    run_name: " "
-    map_name: "f1_aut_wide"
+  # - run: 3
+  #   run_name: " "
+  #   map_name: "f1_aut_wide"
 
 
 

@@ -1,30 +1,50 @@
 # reward_name: "FGM"
 reward_name: "PP"
+test_name: "PP"
 
 n: 1
-set_n: 6
+set_n: 1
+
+n_train_steps: 30000
+n_test_laps: 2
+
+# show_train: True
+show_train: False
+show_test: True
+# show_test: False
+verbose: True
+# verbose: False
+
 
 runs:
-  - run: 4
-    run_name: " "
-    map_name: "levine_blocked"
+  # - run: 4
+  #   run_name: " "
+  #   map_name: "levine_blocked"
 
-  - run: 0
-    run_name: " "
-    map_name: "porto"
+  # - run: 0
+  #   run_name: " "
+  #   map_name: "porto"
+
+  # - run: 1
+  #   run_name: " "
+  #   map_name: "columbia_small"
+
+  # - run: 2
+  #   run_name: " "
+  #   map_name: "berlin"
+
+  # - run: 3
+  #   run_name: " "
+  #   map_name: "f1_aut_wide"
 
   - run: 1
     run_name: " "
-    map_name: "columbia_small"
+    map_name: "example_map"
 
-  - run: 2
+
+  - run: 1
     run_name: " "
-    map_name: "berlin"
-
-  - run: 3
-    run_name: " "
-    map_name: "f1_aut_wide"
-
+    map_name: "race_track"
 
 
 

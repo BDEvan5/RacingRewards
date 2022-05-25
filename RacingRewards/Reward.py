@@ -102,6 +102,8 @@ class RaceTrack:
             return True # made negative progress
         self.max_distance = max(self.max_distance, s)
 
+        return False
+
 
 class DistanceReward():
     def __init__(self, race_track: RaceTrack) -> None:
