@@ -8,11 +8,11 @@ test_name: "SpeedTests"
 # test_msg: "Testing with velocity=2"
 # set_n: 2
 
-test_msg: "Testing with agent velocity"
-set_n: 3
+# test_msg: "Testing with agent velocity"
+# set_n: 3
 
-# test_msg: "Testing with calculate velocity"
-# set_n: 4
+test_msg: "Testing with calculate velocity"
+set_n: 4
 
 n: 1
 
@@ -38,9 +38,9 @@ runs:
   #   run_name: " "
   #   map_name: "porto"
 
-  - run: 1
-    run_name: " "
-    map_name: "example_map"
+  # - run: 1
+  #   run_name: " "
+  #   map_name: "example_map"
 
   - run: 1
     run_name: " "

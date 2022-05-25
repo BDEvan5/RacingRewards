@@ -108,10 +108,10 @@ data %>%
 ## Speed Test
 ```{r}
 d_table = data %>%
-  filter(test_name=="SpeedTests")%>%
-  select(map_name, path, avg_times, n)%>%
+  filter(test_name=="SpeedTests" & n==0)%>%
+  select(map_name, path, avg_times, set_n)%>%
   pivot_wider(names_from = map_name, values_from = avg_times)%>%
-  arrange(n)
+  arrange(set_n)
 
 kable(d_table)
 ```

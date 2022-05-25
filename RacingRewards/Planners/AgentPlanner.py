@@ -52,9 +52,9 @@ class BaseVehicle:
         steering_angle = nn_action[0] * self.max_steer
         # this is to ensure that it doesn't stay still
 
-        speed = (nn_action[1] + 1) * (self.max_v  / 2 - 0.5) + 1
+        # speed = (nn_action[1] + 1) * (self.max_v  / 2 - 0.5) + 1
 
-        # speed = calculate_speed(steering_angle)
+        speed = calculate_speed(steering_angle)
         # speed = 2
         action = np.array([steering_angle, speed])
         # action = np.array([steering_angle, self.speed])
@@ -69,8 +69,8 @@ class TrainVehicle(BaseVehicle):
         self.path = sim_conf.vehicle_path + run.path + run.run_name 
         if not load: init_file_struct(self.path)
         state_space = 2 + self.n_beams
-        # self.agent = TD3(state_space, 1, 1, run.run_name)
-        self.agent = TD3(state_space, 2, 1, run.run_name)
+        self.agent = TD3(state_space, 1, 1, run.run_name)
+        # self.agent = TD3(state_space, 2, 1, run.run_name)
         self.agent.try_load(load, sim_conf.h_size, self.path)
 
         self.state = None
