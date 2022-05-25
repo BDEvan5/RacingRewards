@@ -23,6 +23,7 @@ class TestSimulation():
         self.prev_obs = None
 
         self.race_track = None
+        self.map_name = None
 
         # flags 
         self.show_test = self.test_params.show_test
@@ -32,6 +33,7 @@ class TestSimulation():
     def run_testing_evaluation(self):
         for run in self.run_data:
             self.env = F110Env(map=run.map_name)
+            self.map_name = run.map_name
 
             self.planner = TestVehicle(run, self.conf)
             # self.planner = PurePursuit(self.conf, run)
@@ -140,14 +142,15 @@ class TestSimulation():
 
         observation['reward'] = self.reward(observation, self.prev_obs)
 
-        if abs(observation['reward']) > 0.5:
-            print(f"Reward: {observation['reward']}")
+        # if abs(observation['reward']) > 0.5:
+        #     print(f"Reward: {observation['reward']}")
 
         return observation
 
     def reset_simulation(self):
         reset_pose = np.zeros(3)[None, :]
-        reset_pose[0, 2] = np.pi/2
+        if self.map_name == 'example_map':
+            reset_pose[0, 2] = np.pi/2
         obs, step_reward, done, _ = self.env.reset(reset_pose)
 
         if self.show_train: self.env.render('human_fast')
@@ -170,10 +173,12 @@ class TrainSimulation(TestSimulation):
     def run_training_evaluation(self):
         for run in self.run_data:
             self.env = F110Env(map=run.map_name)
+            self.map_name = run.map_name
 
             #train
             self.race_track = RaceTrack(run.map_name)
             self.race_track.load_center_pts()
+            # self.race_track.plot_wpts()
             self.reward = DistanceReward(self.race_track)
 
             # self.planner = TrainVehicleDiscrete(run, self.conf)

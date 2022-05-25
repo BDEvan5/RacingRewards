@@ -1,5 +1,5 @@
 from RacingRewards.RewardSignals.RewardUtils import *
-
+from matplotlib import pyplot as plt
 
 # Track base
 class RaceTrack:
@@ -12,6 +12,15 @@ class RaceTrack:
         self.max_distance = 0
         self.distance_allowance = 1
 
+
+    def plot_wpts(self):
+        plt.figure(1)
+        plt.plot(self.wpts[:, 0], self.wpts[:, 1], 'b-')
+        for i, pt in enumerate(self.wpts):
+            # plt.plot(pt[0], pt[1], )
+            plt.text(pt[0], pt[1], f"{i}")
+        plt.gca().set_aspect('equal', adjustable='box')
+        plt.show()
 
     def load_center_pts(self):
         track_data = []
@@ -90,17 +99,9 @@ class RaceTrack:
 
         if s <= (self.max_distance - self.distance_allowance) and self.max_distance < 0.8*self.total_s and s > 0.1:
             # check if I went backwards, unless the max distance is almost finished and that it isn't starting
-            return -1 # made negative progress
+            return True # made negative progress
         self.max_distance = max(self.max_distance, s)
 
-
-def get_base_reward(observation):
-    if observation['lap_done']:
-        return 1  # complete
-    if observation['colision_done']:
-        return -1 # crash
-
-    return 0 # intermediate.
 
 class DistanceReward():
     def __init__(self, race_track: RaceTrack) -> None:
@@ -122,7 +123,5 @@ class DistanceReward():
         reward = (ss - s) / self.race_track.total_s
         if reward < -0.5: # happens at end of eps
             return 0.01 # assume positive progress near end
-
-        # reward += get_base_reward(observation)
 
         return reward

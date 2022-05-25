@@ -4,7 +4,7 @@ test_name: "SpeedTests"
 
 # Agent params
 n: 2
-set_n: 0
+set_n: 1
 
 n_train_steps: 30000
 n_test_laps: 10
@@ -27,9 +27,9 @@ runs:
   #   run_name: " "
   #   map_name: "porto"
 
-  - run: 1
-    run_name: " "
-    map_name: "example_map"
+  # - run: 1
+  #   run_name: " "
+  #   map_name: "example_map"
 
   # - run: 1
   #   run_name: " "
@@ -43,9 +43,9 @@ runs:
   #   run_name: " "
   #   map_name: "berlin"
 
-  # - run: 3
-  #   run_name: " "
-  #   map_name: "f1_aut_wide"
+  - run: 3
+    run_name: " "
+    map_name: "f1_aut_wide"
 
 
 
