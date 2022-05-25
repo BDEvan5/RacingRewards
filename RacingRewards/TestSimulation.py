@@ -145,9 +145,6 @@ class TestSimulation():
             observation['lap_done'] = True
 
 
-        # if abs(observation['reward']) > 0.5:
-        #     print(f"Reward: {observation['reward']}")
-
         return observation
 
     def reset_simulation(self):

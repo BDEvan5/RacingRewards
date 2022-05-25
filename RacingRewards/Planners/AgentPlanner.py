@@ -54,8 +54,8 @@ class BaseVehicle:
 
         # speed = (nn_action[1] + 1) * (self.max_v  / 2 - 0.5) + 1
 
-        speed = calculate_speed(steering_angle)
-        # speed = 2
+        # speed = calculate_speed(steering_angle)
+        speed = 2
         action = np.array([steering_angle, speed])
         # action = np.array([steering_angle, self.speed])
 
