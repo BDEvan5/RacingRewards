@@ -598,5 +598,5 @@ class Simulator(object):
 
         # loop over poses to reset
         for i in range(self.num_agents):
-            self.agents[i].reset(np.zeros(3))
- #           self.agents[i].reset(poses[i, :])
+            # self.agents[i].reset(np.zeros(3))
+           self.agents[i].reset(poses[i, :])

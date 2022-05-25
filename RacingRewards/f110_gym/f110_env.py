@@ -366,12 +366,14 @@ class F110Env(gym.Env):
         self.toggle_list = np.zeros((self.num_agents,))
 
         # states after reset
-        # self.start_xs = poses[:, 0]
-        # self.start_ys = poses[:, 1]
-        # self.start_thetas = poses[:, 2]
-        self.start_xs = np.zeros(1)
-        self.start_ys = np.zeros(1)
-        self.start_thetas = np.zeros(1)
+        if poses is None:
+            self.start_xs = np.zeros(1)
+            self.start_ys = np.zeros(1)
+            self.start_thetas = np.zeros(1)
+        else:
+            self.start_xs = poses[:, 0]
+            self.start_ys = poses[:, 1]
+            self.start_thetas = poses[:, 2]
         self.start_rot = np.array([[np.cos(-self.start_thetas[self.ego_idx]), -np.sin(-self.start_thetas[self.ego_idx])], [np.sin(-self.start_thetas[self.ego_idx]), np.cos(-self.start_thetas[self.ego_idx])]])
 
         # call reset to simulator

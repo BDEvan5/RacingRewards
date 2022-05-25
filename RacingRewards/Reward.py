@@ -65,6 +65,7 @@ class RaceTrack:
         self.l2s   = self.diffs[:,0]**2 + self.diffs[:,1]**2 
 
     def find_s(self, point):
+        max_centerline_dist = 2
         dots = np.empty((self.wpts.shape[0]-1, ))
         for i in range(dots.shape[0]):
             dots[i] = np.dot((point - self.wpts[i, :]), self.diffs[i, :])
@@ -76,7 +77,7 @@ class RaceTrack:
 
         min_dist_segment = np.argmin(dists)
         dist_from_cur_pt = dists[min_dist_segment]
-        if dist_from_cur_pt > 1: #more than 2m from centerline
+        if dist_from_cur_pt > max_centerline_dist: #more than 2m from centerline
             return self.ss[min_dist_segment] - dist_from_cur_pt # big makes it go back
 
         s = self.ss[min_dist_segment] + dist_from_cur_pt

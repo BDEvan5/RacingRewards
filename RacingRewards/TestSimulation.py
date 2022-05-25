@@ -144,6 +144,7 @@ class TestSimulation():
 
     def reset_simulation(self):
         reset_pose = np.zeros(3)[None, :]
+        reset_pose[0, 2] = np.pi/2
         obs, step_reward, done, _ = self.env.reset(reset_pose)
 
         observation = self.build_observation(obs, done)
