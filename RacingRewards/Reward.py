@@ -109,13 +109,20 @@ class DistanceReward():
     def __call__(self, observation, prev_obs):
         if prev_obs is None: return 0
 
+        if observation['lap_done']:
+            return 1  # complete
+        if observation['colision_done']:
+            return -1 # crash
+
         position = observation['state'][0:2]
         prev_position = prev_obs['state'][0:2]
 
         s = self.race_track.find_s(prev_position)
         ss = self.race_track.find_s(position)
         reward = (ss - s) / self.race_track.total_s
+        if reward < -0.5: # happens at end of eps
+            return 0.01 # assume positive progress near end
 
-        reward += get_base_reward(observation)
+        # reward += get_base_reward(observation)
 
         return reward

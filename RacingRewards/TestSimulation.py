@@ -140,12 +140,17 @@ class TestSimulation():
 
         observation['reward'] = self.reward(observation, self.prev_obs)
 
+        if abs(observation['reward']) > 0.5:
+            print(f"Reward: {observation['reward']}")
+
         return observation
 
     def reset_simulation(self):
         reset_pose = np.zeros(3)[None, :]
         reset_pose[0, 2] = np.pi/2
         obs, step_reward, done, _ = self.env.reset(reset_pose)
+
+        if self.show_train: self.env.render('human_fast')
 
         observation = self.build_observation(obs, done)
         self.prev_obs = observation
@@ -171,15 +176,15 @@ class TrainSimulation(TestSimulation):
             self.race_track.load_center_pts()
             self.reward = DistanceReward(self.race_track)
 
-            self.planner = TrainVehicleDiscrete(run, self.conf)
-            # self.planner = TrainVehicle(run, self.conf)
+            # self.planner = TrainVehicleDiscrete(run, self.conf)
+            self.planner = TrainVehicle(run, self.conf)
             self.completed_laps = 0
 
             self.run_training()
 
             #Test
-            # self.planner = TestVehicle(run, self.conf)
-            self.planner = TestVehicleDiscrete(run, self.conf)
+            self.planner = TestVehicle(run, self.conf)
+            # self.planner = TestVehicleDiscrete(run, self.conf)
             self.n_test_laps = self.test_params.n_test_laps
             self.lap_times = []
             self.completed_laps = 0
@@ -210,7 +215,7 @@ class TrainSimulation(TestSimulation):
 
             if self.show_train: self.env.render('human_fast')
 
-            if observation['lap_done'] or observation['colision_done']:
+            if observation['lap_done'] or observation['colision_done'] or observation['current_laptime'] > self.conf.max_laptime:
                 self.planner.done_entry(observation)
 
                 if observation['lap_done']:

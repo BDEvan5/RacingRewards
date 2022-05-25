@@ -42,13 +42,9 @@ lookahead: 0.82
 v_gain: 0.9
 v_min_plan: 0.8            # minimum speed for selecting a steering angle to prevent instability
 
-# test params
-test_n: 10              # number of test episodes to run
-baseline_train_n: 20000            # number of training steps to train agent
-buffer_n: 500
 
 #save_paths
 vehicle_path: "Data/Vehicles/"
-max_time: 100
+max_laptime: 180
 
 
