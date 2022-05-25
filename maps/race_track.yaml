@@ -1,0 +1,14 @@
+free_thresh: 0.196
+image: race_track_filled.png
+# image: race_track.pgm
+negate: 0
+occupied_thresh: 0.65
+# origin:
+# - -30.024998
+# - -30.024998
+# - 0.0
+resolution: 0.05
+origin:
+- -12.0
+- -4.0
+- 0.0
