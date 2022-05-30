@@ -1,7 +1,8 @@
 from numba.core.decorators import njit
 import numpy as np 
 import os, shutil
-from RacingRewards.Utils.utils import init_file_struct
+from RacingRewards.Utils.utils import init_file_struct, calculate_speed
+
 
 class FollowTheGap:
     def __init__(self, conf, run):
@@ -21,10 +22,10 @@ class FollowTheGap:
 
     def plan(self, obs):
 
-        if obs['linear_vels_x'][0] < self.v_min_plan:
+        if obs['state'][3] < self.v_min_plan:
             return np.array([0, 7])
 
-        ranges = np.array(obs['scans'][0], dtype=np.float)
+        ranges = np.array(obs['scan'], dtype=np.float)
         angle_increment = np.pi / len(ranges)
 
         max_range = 5
@@ -40,8 +41,9 @@ class FollowTheGap:
 
         half_pt = len(ranges) /2
         steering_angle =  angle_increment * (aim - half_pt)
+        speed = calculate_speed(steering_angle)
 
-        return np.array([steering_angle, self.speed])
+        return np.array([steering_angle, speed])
 
 @njit
 def preprocess_lidar(ranges, max_range):

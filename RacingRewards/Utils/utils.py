@@ -80,18 +80,22 @@ def limit_phi(phi):
 def setup_run_list(run_file):
     run_dict = load_run_list(run_file)
 
+    id = 0
     run_list = []
     set_n = run_dict['set_n']
     for rep in range(run_dict['n']):
         for run in run_dict['runs']:
             run["n"] = rep
+            run["id"] = id
             run["set_n"] = set_n
-            run['run_name'] = f"{run_dict['test_name']}_{run['map_name']}_{set_n}_{rep}"
+            run['run_name'] = f"{run_dict['test_name']}_{run['map_name']}_{set_n}_{rep}_{id}"
             run['reward_name'] = run_dict['reward_name']
             run['path'] = f"{run_dict['test_name']}/"
             run['test_name'] = f"{run_dict['test_name']}"
+            run["discrete"] = False #! dangerous
 
             run_list.append(Namespace(**run))
+            id += 1
 
     test_params = {}
     for key in run_dict.keys():
@@ -113,8 +117,8 @@ def calculate_speed(delta, f_s=0.9):
     # f_s = 0.7
     max_v = 6
 
-    # if abs(delta) < 0.03:
-    #     return max_v
+    if abs(delta) < 0.03:
+        return max_v
 
     V = f_s * np.sqrt(b*g*l_d/np.tan(abs(delta)))
 

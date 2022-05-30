@@ -15,6 +15,7 @@ library(ggplot2)
 library(dplyr)
 library(tidyr)
 library(knitr)
+library(stargazer)
 
 ```
 
@@ -34,14 +35,18 @@ kable(d_table)
 
 ## Benchmark
 
+
+
 ```{r}
 d_table = data %>%
-  filter(reward_name=="PP")%>%
-  select(map_name, path, set_n, avg_times)%>%
-  pivot_wider(names_from = map_name, values_from = avg_times)%>%
-  arrange(set_n)
+  filter(test_name=="FGM"| test_name=='PP'|test_name=='BenchmarkDRL')%>%
+  select(map_name, path, avg_times)%>%
+  pivot_wider(names_from = map_name, values_from = avg_times)
+  # arrange(set_n)
 
 kable(d_table)
+stargazer(d_table[1:2,], summary=FALSE)
+# print(stargazer(d_table[1:2,], summary=FALSE),  file="BenchmarkTable.tex")
 ```
 
 ## Baseline Tests
@@ -131,21 +136,37 @@ data %>%
 ## Algorithm Test
 ```{r}
 d_table = data %>%
-  filter(test_name=="AlgorithmTests" & n==0)%>%
-  select(map_name, path, avg_times, set_n)%>%
+  filter(test_name=="AlgorithmTests" & set_n==3 )%>%
+  select(map_name, path, avg_times, discrete, n)%>%
   pivot_wider(names_from = map_name, values_from = avg_times)%>%
-  arrange(set_n)
+  # pivot_wider(names_from = discrete, values_from = avg_times)%>%
+  arrange(n)
 
 kable(d_table)
 ```
 
 ```{r}
 data %>%
-  filter(test_name=="AlgorithmTests")%>%
-  select(map_name, path, avg_times, n)%>%
+  filter(test_name=="AlgorithmTests" & set_n==3& avg_times> 1.0)%>%
+  select(map_name, path, avg_times, discrete)%>%
   # pivot_wider(names_from = map_name, values_from = avg_times)%>%
-  ggplot(aes(x=map_name, y=avg_times))+
+  ggplot(aes(x=map_name, y=avg_times, fill=factor(discrete)))+
   geom_boxplot()
 
 
 ```
+
+```{r}
+d_table = data %>%
+  filter(test_name=="AlgorithmTests" & set_n==3  )%>%
+  select(map_name, avg_times, discrete)%>%
+  pivot_wider(names_from = map_name, values_from = avg_times)
+  # group_by(map_name)%>%
+  # mutate(zero_count=length(which(avg_times==0)))%>%
+  # select(discrete)
+
+print(summarise(d_table))
+
+kable(d_table)
+```
+

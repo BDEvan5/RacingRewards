@@ -1,6 +1,7 @@
 from RacingRewards.f110_gym.f110_env import F110Env
 from RacingRewards.Utils.utils import *
 from RacingRewards.Planners.PurePursuit import PurePursuit
+from RacingRewards.Planners.follow_the_gap import FollowTheGap
 from RacingRewards.Planners.AgentPlanner import TestVehicle, TrainVehicle
 from RacingRewards.Planners.AgentPlannerDiscrete import TestVehicleDiscrete, TrainVehicleDiscrete
 
@@ -24,6 +25,7 @@ class TestSimulation():
 
         self.race_track = None
         self.map_name = None
+        self.reward = None
 
         # flags 
         self.show_test = self.test_params.show_test
@@ -35,8 +37,9 @@ class TestSimulation():
             self.env = F110Env(map=run.map_name)
             self.map_name = run.map_name
 
-            # self.planner = TestVehicle(run, self.conf)
-            self.planner = PurePursuit(self.conf, run)
+            if run.test_name == "PP": self.planner = PurePursuit(self.conf, run)
+            elif run.test_name == "FGM": self.planner = FollowTheGap(self.conf, run)
+            else: self.planner = TestVehicle(run, self.conf)
 
             self.n_test_laps = self.test_params.n_test_laps
             self.lap_times = []
@@ -143,7 +146,8 @@ class TestSimulation():
         if obs['lap_counts'][0] == 1:
             observation['lap_done'] = True
 
-        observation['reward'] = self.reward(observation, self.prev_obs)
+        if self.reward:
+            observation['reward'] = self.reward(observation, self.prev_obs)
 
         return observation
 
@@ -260,7 +264,7 @@ def main():
     # sim = TestSimulation("BenchmarkRuns")
     # sim.run_testing_evaluation()
 
-    sim = TrainSimulation("BaselineRepeatRuns")
+    sim = TrainSimulation("BenchmarkRuns")
     sim.run_training_evaluation()
 
 if __name__ == '__main__':

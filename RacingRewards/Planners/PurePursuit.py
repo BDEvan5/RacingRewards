@@ -152,6 +152,12 @@ def first_point_on_trajectory_intersecting_circle(point, radius, trajectory, t=0
     return first_p, first_i, first_t
 
 
+def get_distance(x1=[0, 0], x2=[0, 0]):
+    d = [0.0, 0.0]
+    for i in range(2):
+        d[i] = x1[i] - x2[i]
+    return np.linalg.norm(d)
+
 class Trajectory:
     def __init__(self, map_name):
         self.map_name = map_name
@@ -251,20 +257,6 @@ def get_actuation(pose_theta, lookahead_point, position, lookahead_distance, whe
     steering_angle = np.arctan(wheelbase/radius)
     return speed, steering_angle
 
-# class PurePursuit:
-#     def __init__(self, conf, run):
-#         self.name = run.run_name
-        
-#         self.trajectory = Trajectory(run.map_name)
-
-#         self.lookahead = conf.lookahead
-#         self.vgain = conf.v_gain
-#         self.v_min_plan = conf.v_min_plan
-#         self.wheelbase =  conf.l_f + conf.l_r
-#         self.max_steer = conf.max_steer
-#         self.vehicle_speed = conf.vehicle_speed
-
-#         path = os.getcwd() + f"/Data/Vehicles/" + run.path  + self.name
 
 
 class PurePursuit:
@@ -295,6 +287,11 @@ class PurePursuit:
 
         speed, steering_angle = get_actuation(theta, lookahead_point, position, self.lookahead, self.wheelbase)
         steering_angle = np.clip(steering_angle, -self.max_steer, self.max_steer)
+        # speed = calculate_speed(steering_angle)
+        speed *= 0.8
 
-        return np.array([steering_angle, self.vehicle_speed])
+        action = np.array([steering_angle, speed])
+
+        return action
+        # return np.array([steering_angle, self.vehicle_speed])
 
