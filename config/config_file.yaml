@@ -1,14 +1,4 @@
-# map information: select a map and s_theta accordingly
-# map_name: "porto"
-# stheta: -0.4  # porto
 
-# map_name: "columbia_small"
-# # map_name: "f1_aut_wide"
-# stheta: 0  # columbia
-
-# map_ext: ".png"
-# sx: 0.0
-# sy: 0
 
 # Vehicle params
 max_v: 7
@@ -38,7 +28,7 @@ max_steps: 1000
 random_seed: 1000          # Seed for NumPy randomness
 
 # PurePursuit planner values
-lookahead: 1
+lookahead: 1.4
 v_gain: 0.9
 v_min_plan: 1            # minimum speed for selecting a steering angle to prevent instability
 

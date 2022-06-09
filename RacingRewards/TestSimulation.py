@@ -280,11 +280,11 @@ class TrainSimulation(TestSimulation):
 
 
 def main():
-    sim = TestSimulation("BenchmarkRuns")
-    sim.run_testing_evaluation()
+    # sim = TestSimulation("BenchmarkRuns")
+    # sim.run_testing_evaluation()
 
-    # sim = TrainSimulation("BenchmarkRuns")
-    # sim.run_training_evaluation()
+    sim = TrainSimulation("BenchmarkRuns")
+    sim.run_training_evaluation()
 
 if __name__ == '__main__':
     main()

@@ -173,34 +173,6 @@ pre code {
 </div>
 
 
-<pre class="r"><code>knitr::opts_chunk$set(echo = FALSE)
-# knitr::opts_chunk$set(echo = TRUE)
-
-data = read.csv(&quot;DataTable.csv&quot;)
-
-library(ggplot2)
-library(dplyr)</code></pre>
-<pre><code>## 
-## Attaching package: &#39;dplyr&#39;</code></pre>
-<pre><code>## The following objects are masked from &#39;package:stats&#39;:
-## 
-##     filter, lag</code></pre>
-<pre><code>## The following objects are masked from &#39;package:base&#39;:
-## 
-##     intersect, setdiff, setequal, union</code></pre>
-<pre class="r"><code>library(tidyr)
-library(knitr)
-library(stargazer)</code></pre>
-<pre><code>## 
-## Please cite as:</code></pre>
-<pre><code>##  Hlavac, Marek (2022). stargazer: Well-Formatted Regression and Summary Statistics Tables.</code></pre>
-<pre><code>##  R package version 5.2.3. https://CRAN.R-project.org/package=stargazer</code></pre>
-<pre class="r"><code>library(kableExtra)</code></pre>
-<pre><code>## 
-## Attaching package: &#39;kableExtra&#39;</code></pre>
-<pre><code>## The following object is masked from &#39;package:dplyr&#39;:
-## 
-##     group_rows</code></pre>
 <div id="all-tests" class="section level1">
 <h1>All Tests</h1>
 <table>
@@ -908,59 +880,45 @@ library(stargazer)</code></pre>
 <td align="right">0</td>
 </tr>
 <tr class="even">
-<td align="left">levine_blocked</td>
-<td align="right">1</td>
-<td align="left">FGM/</td>
-<td align="right">16.65000</td>
-<td align="right">100</td>
-</tr>
-<tr class="odd">
-<td align="left">example_map</td>
-<td align="right">1</td>
-<td align="left">FGM/</td>
-<td align="right">33.55500</td>
-<td align="right">100</td>
-</tr>
-<tr class="even">
 <td align="left">columbia_small</td>
-<td align="right">1</td>
+<td align="right">2</td>
 <td align="left">FGM/</td>
-<td align="right">15.29000</td>
+<td align="right">15.45000</td>
 <td align="right">100</td>
 </tr>
 <tr class="odd">
 <td align="left">f1_aut_wide</td>
-<td align="right">1</td>
+<td align="right">2</td>
 <td align="left">FGM/</td>
-<td align="right">23.08500</td>
+<td align="right">21.64000</td>
 <td align="right">100</td>
 </tr>
 <tr class="even">
 <td align="left">example_map</td>
-<td align="right">1</td>
-<td align="left">PP/</td>
-<td align="right">42.13000</td>
+<td align="right">2</td>
+<td align="left">FGM/</td>
+<td align="right">32.98000</td>
 <td align="right">100</td>
 </tr>
 <tr class="odd">
-<td align="left">levine_blocked</td>
-<td align="right">1</td>
+<td align="left">example_map</td>
+<td align="right">2</td>
 <td align="left">PP/</td>
-<td align="right">16.98000</td>
+<td align="right">26.87000</td>
 <td align="right">100</td>
 </tr>
 <tr class="even">
-<td align="left">f1_aut_wide</td>
-<td align="right">1</td>
+<td align="left">columbia_small</td>
+<td align="right">2</td>
 <td align="left">PP/</td>
-<td align="right">25.79000</td>
+<td align="right">12.73000</td>
 <td align="right">100</td>
 </tr>
 <tr class="odd">
-<td align="left">columbia_small</td>
-<td align="right">1</td>
+<td align="left">f1_aut_wide</td>
+<td align="right">2</td>
 <td align="left">PP/</td>
-<td align="right">20.05000</td>
+<td align="right">19.38000</td>
 <td align="right">100</td>
 </tr>
 <tr class="even">
@@ -1058,16 +1016,16 @@ library(stargazer)</code></pre>
 path
 </th>
 <th style="text-align:right;">
-levine_blocked
+columbia_small
+</th>
+<th style="text-align:right;">
+f1_aut_wide
 </th>
 <th style="text-align:right;">
 example_map
 </th>
 <th style="text-align:right;">
-columbia_small
-</th>
-<th style="text-align:right;">
-f1_aut_wide
+levine_blocked
 </th>
 </tr>
 </thead>
@@ -1077,16 +1035,16 @@ f1_aut_wide
 FGM/
 </td>
 <td style="text-align:right;">
-16.65000
+15.450
 </td>
 <td style="text-align:right;">
-33.555
+21.640
 </td>
 <td style="text-align:right;">
-15.290
+32.980
 </td>
 <td style="text-align:right;">
-23.085
+NA
 </td>
 </tr>
 <tr>
@@ -1094,16 +1052,16 @@ FGM/
 PP/
 </td>
 <td style="text-align:right;">
-16.98000
+12.730
 </td>
 <td style="text-align:right;">
-42.130
+19.380
 </td>
 <td style="text-align:right;">
-20.050
+26.870
 </td>
 <td style="text-align:right;">
-25.790
+NA
 </td>
 </tr>
 <tr>
@@ -1111,16 +1069,16 @@ PP/
 BaselineDRL/
 </td>
 <td style="text-align:right;">
-12.55778
+11.199
+</td>
+<td style="text-align:right;">
+63.084
 </td>
 <td style="text-align:right;">
 38.758
 </td>
 <td style="text-align:right;">
-11.199
-</td>
-<td style="text-align:right;">
-63.084
+12.55778
 </td>
 </tr>
 </tbody>
@@ -1128,11 +1086,11 @@ BaselineDRL/
 <pre><code>
 \begin{tabular}[t]{l&gt;{\raggedleft\arraybackslash}p{3cm}&gt;{\raggedleft\arraybackslash}p{3cm}&gt;{\raggedleft\arraybackslash}p{3cm}&gt;{\raggedleft\arraybackslash}p{3cm}}
 \toprule
-path &amp; levine\_blocked &amp; example\_map &amp; columbia\_small &amp; f1\_aut\_wide\\
+path &amp; columbia\_small &amp; f1\_aut\_wide &amp; example\_map &amp; levine\_blocked\\
 \midrule
-FGM/ &amp; 16.65000 &amp; 33.555 &amp; 15.290 &amp; 23.085\\
-PP/ &amp; 16.98000 &amp; 42.130 &amp; 20.050 &amp; 25.790\\
-BaselineDRL/ &amp; 12.55778 &amp; 38.758 &amp; 11.199 &amp; 63.084\\
+FGM/ &amp; 15.450 &amp; 21.640 &amp; 32.980 &amp; NA\\
+PP/ &amp; 12.730 &amp; 19.380 &amp; 26.870 &amp; NA\\
+BaselineDRL/ &amp; 11.199 &amp; 63.084 &amp; 38.758 &amp; 12.55778\\
 \bottomrule
 \end{tabular}</code></pre>
 </div>

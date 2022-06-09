@@ -87,10 +87,9 @@ avg_times,id,map_name,n,path,reward_name,test_name,run,run_name,std_dev,success_
 80.99333333333786,77,example_map,9,AlgorithmTests/,Progress,AlgorithmTests,1,AlgorithmTests_example_map_3_9_77,0.21725560982411546,90.0,3,,,,,True
 30.56700000000198,68,f1_aut_wide,8,AlgorithmTests/,Progress,AlgorithmTests,3,AlgorithmTests_f1_aut_wide_3_8_68,0.04980963762165687,100.0,3,,,,,False
 77.68200000000283,50,example_map,6,AlgorithmTests/,Progress,AlgorithmTests,1,AlgorithmTests_example_map_3_6_50,0.04578209256906181,100.0,3,,,,,False
-16.649999999999803,0,levine_blocked,0,FGM/,FGM,FGM,4,FGM_levine_blocked_1_0_0,0.15000000000002345,100.0,1,,,,,False
-33.5550000000019,3,example_map,0,FGM/,FGM,FGM,1,FGM_example_map_1_0_3,0.32499999999993534,100.0,1,,,,,False
-15.289999999999718,1,columbia_small,0,FGM/,FGM,FGM,1,FGM_columbia_small_1_0_1,0.1499999999999968,100.0,1,,,,,False
-23.08500000000081,2,f1_aut_wide,0,FGM/,FGM,FGM,3,FGM_f1_aut_wide_1_0_2,0.3850000000000602,100.0,1,,,,,False
+15.449999999999715,0,columbia_small,0,FGM/,FGM,FGM,1,FGM_columbia_small_2_0_0,0.0,100.0,2,,,,,False
+21.640000000000583,1,f1_aut_wide,0,FGM/,FGM,FGM,3,FGM_f1_aut_wide_2_0_1,0.0,100.0,2,,,,,False
+32.98000000000201,2,example_map,0,FGM/,FGM,FGM,1,FGM_example_map_2_0_2,0.0,100.0,2,,,,,False
 93.90100000001114,5,f1_aut_wide,1,SpeedTests/,Progress,SpeedTests,3,SpeedTests_f1_aut_wide_1_1_5,0.2528022942935158,100.0,1,,,,,
 81.22100000000464,7,columbia_small,2,SpeedTests/,Progress,SpeedTests,1,SpeedTests_columbia_small_2_1_7,0.053000000000027116,100.0,1,,,,,
 82.98500000000556,0,example_map,0,SpeedTests/,Progress,SpeedTests,1,SpeedTests_example_map_0_1_0,0.09047098982551464,100.0,1,,,,,
@@ -103,10 +102,9 @@ avg_times,id,map_name,n,path,reward_name,test_name,run,run_name,std_dev,success_
 93.91700000001114,8,f1_aut_wide,2,SpeedTests/,Progress,SpeedTests,3,SpeedTests_f1_aut_wide_2_1_8,0.13084723917613822,100.0,1,,,,,
 153.67500000000524,,example_map,0,SpeedTests/,Progress,SpeedTests,1,SpeedTests_example_map_3_0,0.013601470508723073,100.0,3,,,,,
 162.19299999999748,3,example_map,1,SpeedTests/,Progress,SpeedTests,1,SpeedTests_example_map_1_1_3,0.038483762809752714,100.0,1,,,,,
-42.13000000000019,3,example_map,0,PP/,PP,PP,1,PP_example_map_1_0_3,0.0,100.0,1,,,,,False
-16.979999999999855,0,levine_blocked,0,PP/,PP,PP,4,PP_levine_blocked_1_0_0,0.0,100.0,1,,,,,False
-25.790000000001232,2,f1_aut_wide,0,PP/,PP,PP,3,PP_f1_aut_wide_1_0_2,0.0,100.0,1,,,,,False
-20.050000000000335,1,columbia_small,0,PP/,PP,PP,1,PP_columbia_small_1_0_1,0.0,100.0,1,,,,,False
+26.8700000000014,2,example_map,0,PP/,PP,PP,1,PP_example_map_2_0_2,0.0,100.0,2,,,,,False
+12.729999999999773,0,columbia_small,0,PP/,PP,PP,1,PP_columbia_small_2_0_0,0.0,100.0,2,,,,,False
+19.38000000000023,1,f1_aut_wide,0,PP/,PP,PP,3,PP_f1_aut_wide_2_0_1,0.0,100.0,2,,,,,False
 0.0,5,example_map,0,BenchmarkDRL/,Progress,BenchmarkDRL,1,BenchmarkDRL_example_map_1_0_5,0.0,0.0,1,,,,,False
 0.0,6,race_track,0,BenchmarkDRL/,Progress,BenchmarkDRL,1,BenchmarkDRL_race_track_1_0_6,0.0,0.0,1,,,,,False
 9.013999999999852,1,porto,0,BenchmarkDRL/,Progress,BenchmarkDRL,0,BenchmarkDRL_porto_1_0_1,0.27214701909077904,100.0,1,,,,,False

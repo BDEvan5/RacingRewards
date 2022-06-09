@@ -15,11 +15,13 @@ class Logggs:
         self.N = None
 
         self.resolution = None
-        self.map_name = "f1_aut_wide"
+        # self.map_name = "f1_aut_wide"
+        self.map_name = "columbia_small"
+        # self.map_name = "example_map"
         self.origin = None
         self.map_img_name = None
 
-        self.t = Trajectory(f"f1_aut_wide")
+        self.t = Trajectory(self.map_name)
 
         self.height = None
         self.width = None
@@ -188,7 +190,7 @@ if __name__ == '__main__':
     log = Logggs()
     log.load_csv_track()
     log.show_poses()
-    log.plot_vels()
+    # log.plot_vels()
     # log.plot_forces()
 
 
