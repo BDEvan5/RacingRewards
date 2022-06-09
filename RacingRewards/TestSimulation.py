@@ -211,7 +211,6 @@ class TrainSimulation(TestSimulation):
 
             self.env.close_rendering()
 
-
     def run_training(self):
         assert self.env != None, "No environment created"
         start_time = time.time()
@@ -261,11 +260,11 @@ class TrainSimulation(TestSimulation):
 
 
 def main():
-    # sim = TestSimulation("BenchmarkRuns")
-    # sim.run_testing_evaluation()
+    sim = TestSimulation("BenchmarkRuns")
+    sim.run_testing_evaluation()
 
-    sim = TrainSimulation("BenchmarkRuns")
-    sim.run_training_evaluation()
+    # sim = TrainSimulation("BenchmarkRuns")
+    # sim.run_training_evaluation()
 
 if __name__ == '__main__':
     main()

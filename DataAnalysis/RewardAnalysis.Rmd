@@ -43,8 +43,8 @@ kbl(d_table, format="markdown")
 
 ```{r, comment=NA}
 d_table = data %>%
-  filter(test_name=="FGM"| test_name=='PP'|test_name=='BenchmarkDRL')%>%
-  filter(map_name!='porto'&map_name!='berlin')%>%
+  filter(test_name=="FGM"| test_name=='PP'|test_name=='BaselineDRL')%>%
+  # filter(map_name!='porto'&map_name!='berlin')%>%
   select(map_name, path, avg_times)%>%
   pivot_wider(names_from = map_name, values_from = avg_times)
   # arrange(set_n)
@@ -54,18 +54,17 @@ kbl(d_table)
 ```
 ```{r, comment=NA}
 d_table = data %>%
-  filter(test_name=="FGM"| test_name=='PP'|test_name=='BenchmarkDRL')%>%
-  filter(map_name!='porto'&map_name!='berlin')%>%
+  filter(test_name=="FGM"| test_name=='PP'|test_name=='BaselineDRL')%>%
+  # filter(map_name!='porto'&map_name!='berlin'&map_name!='berlin')%>%
   select(map_name, path, avg_times)%>%
   pivot_wider(names_from = map_name, values_from = avg_times)
   # arrange(set_n)
 
 a = kbl(d_table, format="latex", booktabs = T)%>%
-  column_spec(2, width="1.5cm")%>%
-  column_spec(3, width="1.5cm")%>%
-  column_spec(4, width="2cm")%>%
-  column_spec(5, width="2cm")%>%
-  column_spec(6, width="2cm")
+  column_spec(2, width="3cm")%>%
+  column_spec(3, width="3cm")%>%
+  column_spec(4, width="3cm")%>%
+  column_spec(5, width="3cm")
 print(a)
 # stargazer(d_table[1:2,], summary=FALSE)
 # print(stargazer(d_table[1:2,], summary=FALSE),  file="BenchmarkTable.tex")

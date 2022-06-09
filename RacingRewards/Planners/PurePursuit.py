@@ -15,7 +15,7 @@ from RacingRewards.Utils.utils import init_file_struct, calculate_speed
 from numba import njit
 import csv
 import os
-
+from matplotlib import pyplot as plt
 
 @njit(fastmath=True, cache=True)
 def add_locations(x1, x2, dx=1):
@@ -244,7 +244,7 @@ class Trajectory:
         plt.figure(3)
         plt.plot(self.waypoints[:,0], self.waypoints[:,1])
         plt.gca().set_aspect('equal', adjustable='box')
-        plt.show()
+        # plt.show()
 
 
 @njit(fastmath=False, cache=True)
@@ -266,7 +266,7 @@ class PurePursuit:
         init_file_struct(path)
 
         self.trajectory = Trajectory(test_params.map_name)
-        # self.trajectory.show_pts()
+        self.trajectory.show_pts()
 
         self.lookahead = conf.lookahead
         self.v_min_plan = conf.v_min_plan
@@ -281,6 +281,8 @@ class PurePursuit:
         position = state[0:2]
         theta = state[2]
         lookahead_point = self.trajectory.get_current_waypoint(position, self.lookahead)
+        # plt.plot(lookahead_point[0], lookahead_point[1], 'ro')
+        # plt.pause(0.001)
 
         if state[3] < self.v_min_plan:
             return np.array([0.0, self.vehicle_speed])
@@ -288,10 +290,9 @@ class PurePursuit:
         speed, steering_angle = get_actuation(theta, lookahead_point, position, self.lookahead, self.wheelbase)
         steering_angle = np.clip(steering_angle, -self.max_steer, self.max_steer)
         # speed = calculate_speed(steering_angle)
-        speed *= 0.8
+        # speed *= 0.5
 
         action = np.array([steering_angle, speed])
 
         return action
-        # return np.array([steering_angle, self.vehicle_speed])
 

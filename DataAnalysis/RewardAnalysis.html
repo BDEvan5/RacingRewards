@@ -831,6 +831,34 @@ library(stargazer)</code></pre>
 <td align="right">100</td>
 </tr>
 <tr class="odd">
+<td align="left">levine_blocked</td>
+<td align="right">1</td>
+<td align="left">BaselineDRL/</td>
+<td align="right">12.55778</td>
+<td align="right">90</td>
+</tr>
+<tr class="even">
+<td align="left">f1_aut_wide</td>
+<td align="right">1</td>
+<td align="left">BaselineDRL/</td>
+<td align="right">63.08400</td>
+<td align="right">100</td>
+</tr>
+<tr class="odd">
+<td align="left">columbia_small</td>
+<td align="right">1</td>
+<td align="left">BaselineDRL/</td>
+<td align="right">11.19900</td>
+<td align="right">100</td>
+</tr>
+<tr class="even">
+<td align="left">example_map</td>
+<td align="right">1</td>
+<td align="left">BaselineDRL/</td>
+<td align="right">38.75800</td>
+<td align="right">100</td>
+</tr>
+<tr class="odd">
 <td align="left">example_map</td>
 <td align="right">1</td>
 <td align="left">BenchmarkDRL/</td>
@@ -883,91 +911,49 @@ library(stargazer)</code></pre>
 <td align="left">levine_blocked</td>
 <td align="right">1</td>
 <td align="left">FGM/</td>
-<td align="right">15.94750</td>
+<td align="right">16.65000</td>
 <td align="right">100</td>
 </tr>
 <tr class="odd">
 <td align="left">example_map</td>
 <td align="right">1</td>
 <td align="left">FGM/</td>
-<td align="right">33.79250</td>
-<td align="right">100</td>
-</tr>
-<tr class="even">
-<td align="left">berlin</td>
-<td align="right">1</td>
-<td align="left">FGM/</td>
-<td align="right">18.80000</td>
-<td align="right">100</td>
-</tr>
-<tr class="odd">
-<td align="left">porto</td>
-<td align="right">1</td>
-<td align="left">FGM/</td>
-<td align="right">9.31000</td>
-<td align="right">75</td>
-</tr>
-<tr class="even">
-<td align="left">race_track</td>
-<td align="right">1</td>
-<td align="left">FGM/</td>
-<td align="right">24.22750</td>
-<td align="right">100</td>
-</tr>
-<tr class="odd">
-<td align="left">f1_aut_wide</td>
-<td align="right">1</td>
-<td align="left">FGM/</td>
-<td align="right">22.21500</td>
+<td align="right">33.55500</td>
 <td align="right">100</td>
 </tr>
 <tr class="even">
 <td align="left">columbia_small</td>
 <td align="right">1</td>
 <td align="left">FGM/</td>
-<td align="right">15.28250</td>
+<td align="right">15.29000</td>
 <td align="right">100</td>
 </tr>
 <tr class="odd">
-<td align="left">berlin</td>
+<td align="left">f1_aut_wide</td>
 <td align="right">1</td>
-<td align="left">PP/</td>
-<td align="right">19.23000</td>
+<td align="left">FGM/</td>
+<td align="right">23.08500</td>
 <td align="right">100</td>
 </tr>
 <tr class="even">
-<td align="left">race_track</td>
-<td align="right">1</td>
-<td align="left">PP/</td>
-<td align="right">0.00000</td>
-<td align="right">0</td>
-</tr>
-<tr class="odd">
 <td align="left">example_map</td>
 <td align="right">1</td>
 <td align="left">PP/</td>
 <td align="right">42.13000</td>
 <td align="right">100</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">levine_blocked</td>
 <td align="right">1</td>
 <td align="left">PP/</td>
 <td align="right">16.98000</td>
 <td align="right">100</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">f1_aut_wide</td>
 <td align="right">1</td>
 <td align="left">PP/</td>
 <td align="right">25.79000</td>
-<td align="right">100</td>
-</tr>
-<tr class="even">
-<td align="left">porto</td>
-<td align="right">1</td>
-<td align="left">PP/</td>
-<td align="right">9.29000</td>
 <td align="right">100</td>
 </tr>
 <tr class="odd">
@@ -1078,13 +1064,10 @@ levine_blocked
 example_map
 </th>
 <th style="text-align:right;">
-race_track
+columbia_small
 </th>
 <th style="text-align:right;">
 f1_aut_wide
-</th>
-<th style="text-align:right;">
-columbia_small
 </th>
 </tr>
 </thead>
@@ -1094,19 +1077,16 @@ columbia_small
 FGM/
 </td>
 <td style="text-align:right;">
-15.9475
+16.65000
 </td>
 <td style="text-align:right;">
-33.7925
+33.555
 </td>
 <td style="text-align:right;">
-24.2275
+15.290
 </td>
 <td style="text-align:right;">
-22.215
-</td>
-<td style="text-align:right;">
-15.2825
+23.085
 </td>
 </tr>
 <tr>
@@ -1114,51 +1094,45 @@ FGM/
 PP/
 </td>
 <td style="text-align:right;">
-16.9800
+16.98000
 </td>
 <td style="text-align:right;">
-42.1300
+42.130
 </td>
 <td style="text-align:right;">
-0.0000
+20.050
 </td>
 <td style="text-align:right;">
 25.790
 </td>
-<td style="text-align:right;">
-20.0500
-</td>
 </tr>
 <tr>
 <td style="text-align:left;">
-BenchmarkDRL/
+BaselineDRL/
 </td>
 <td style="text-align:right;">
-57.3230
+12.55778
 </td>
 <td style="text-align:right;">
-0.0000
+38.758
 </td>
 <td style="text-align:right;">
-0.0000
+11.199
 </td>
 <td style="text-align:right;">
-0.000
-</td>
-<td style="text-align:right;">
-67.3890
+63.084
 </td>
 </tr>
 </tbody>
 </table>
 <pre><code>
-\begin{tabular}[t]{l&gt;{\raggedleft\arraybackslash}p{1.5cm}&gt;{\raggedleft\arraybackslash}p{1.5cm}&gt;{\raggedleft\arraybackslash}p{2cm}&gt;{\raggedleft\arraybackslash}p{2cm}&gt;{\raggedleft\arraybackslash}p{2cm}}
+\begin{tabular}[t]{l&gt;{\raggedleft\arraybackslash}p{3cm}&gt;{\raggedleft\arraybackslash}p{3cm}&gt;{\raggedleft\arraybackslash}p{3cm}&gt;{\raggedleft\arraybackslash}p{3cm}}
 \toprule
-path &amp; levine\_blocked &amp; example\_map &amp; race\_track &amp; f1\_aut\_wide &amp; columbia\_small\\
+path &amp; levine\_blocked &amp; example\_map &amp; columbia\_small &amp; f1\_aut\_wide\\
 \midrule
-FGM/ &amp; 15.9475 &amp; 33.7925 &amp; 24.2275 &amp; 22.215 &amp; 15.2825\\
-PP/ &amp; 16.9800 &amp; 42.1300 &amp; 0.0000 &amp; 25.790 &amp; 20.0500\\
-BenchmarkDRL/ &amp; 57.3230 &amp; 0.0000 &amp; 0.0000 &amp; 0.000 &amp; 67.3890\\
+FGM/ &amp; 16.65000 &amp; 33.555 &amp; 15.290 &amp; 23.085\\
+PP/ &amp; 16.98000 &amp; 42.130 &amp; 20.050 &amp; 25.790\\
+BaselineDRL/ &amp; 12.55778 &amp; 38.758 &amp; 11.199 &amp; 63.084\\
 \bottomrule
 \end{tabular}</code></pre>
 </div>
