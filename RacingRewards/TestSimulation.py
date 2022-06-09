@@ -9,6 +9,20 @@ import numpy as np
 import time
 from RacingRewards.Reward import RaceTrack, DistanceReward
 
+class TestLogger:
+    def __init__(self):
+        self.path = "Data/Logs"  
+        self.env_log = "/test_log.csv"
+        self.lap = 0
+
+        with open(self.path + self.env_log, "w") as f:
+            print(f"file cleaned")
+            # f.write("act_steer, act_vel, pos_x, pos_y, theta, v\n")
+
+    def write_env_log(self, data):
+        with open(self.path + self.env_log, "a") as f:
+            f.write(data)
+
 
 class TestSimulation():
     def __init__(self, run_file: str):
@@ -31,6 +45,8 @@ class TestSimulation():
         self.show_test = self.test_params.show_test
         self.show_train = self.test_params.show_train
         self.verbose = self.test_params.verbose
+
+        self.logger = TestLogger()
 
     def run_testing_evaluation(self):
         for run in self.run_data:
@@ -95,6 +111,7 @@ class TestSimulation():
     def run_step(self, action):
         sim_steps = self.conf.sim_steps
 
+
         sim_steps, done = sim_steps, False
         while sim_steps > 0 and not done:
             obs, step_reward, done, _ = self.env.step(action[None, :])
@@ -102,6 +119,9 @@ class TestSimulation():
         
         observation = self.build_observation(obs, done)
 
+        data = f"{action[0]:.2f}, {action[1]:.2f}, {obs['poses_x'][0]:.2f}, {obs['poses_y'][0]:.2f}, {obs['poses_theta'][0]}, {obs['linear_vels_x'][0]}\n"
+        self.logger.write_env_log(data)
+        
         return observation
 
     def build_observation(self, obs, done):

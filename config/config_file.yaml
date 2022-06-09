@@ -38,7 +38,7 @@ max_steps: 1000
 random_seed: 1000          # Seed for NumPy randomness
 
 # PurePursuit planner values
-lookahead: 0.82
+lookahead: 1
 v_gain: 0.9
 v_min_plan: 1            # minimum speed for selecting a steering angle to prevent instability
 

@@ -11,7 +11,7 @@ set_n: 2
 
 n_train_steps: 30000
 # n_test_laps: 2
-n_test_laps: 10
+n_test_laps: 1
 
 # show_train: True
 show_train: False

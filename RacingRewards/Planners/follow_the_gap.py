@@ -41,6 +41,7 @@ class FollowTheGap:
 
         half_pt = len(ranges) /2
         steering_angle =  angle_increment * (aim - half_pt)
+        steering_angle = np.clip(steering_angle, -0.4, 0.4)
         speed = calculate_speed(steering_angle)
 
         return np.array([steering_angle, speed])
