@@ -45,6 +45,7 @@ class TestSimulation():
         self.show_test = self.test_params.show_test
         self.show_train = self.test_params.show_train
         self.verbose = self.test_params.verbose
+        self.logging = self.test_params.logging
 
         self.logger = TestLogger()
 
@@ -119,8 +120,9 @@ class TestSimulation():
         
         observation = self.build_observation(obs, done)
 
-        data = f"{action[0]:.2f}, {action[1]:.2f}, {obs['poses_x'][0]:.2f}, {obs['poses_y'][0]:.2f}, {obs['poses_theta'][0]}, {obs['linear_vels_x'][0]}\n"
-        self.logger.write_env_log(data)
+        if self.logging:
+            data = f"{action[0]:.2f}, {action[1]:.2f}, {obs['poses_x'][0]:.2f}, {obs['poses_y'][0]:.2f}, {obs['poses_theta'][0]}, {obs['linear_vels_x'][0]}\n"
+            self.logger.write_env_log(data)
         
         return observation
 

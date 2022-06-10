@@ -16,7 +16,6 @@ library(ggplot2)
 library(dplyr)
 library(tidyr)
 library(knitr)
-library(stargazer)
 library(kableExtra)
 
 ```
@@ -42,16 +41,53 @@ kbl(d_table, format="markdown")
 
 
 ```{r, comment=NA}
-d_table = data %>%
-  filter(test_name=="FGM"| test_name=='PP'|test_name=='BaselineDRL')%>%
-  # filter(map_name!='porto'&map_name!='berlin')%>%
+data1 = data %>%
+  filter(test_name=='BaselineDRL_r')%>%
+  filter(map_name!='levine_blocked')%>%
+  filter(avg_times>0)%>%
+  select(map_name, path, avg_times)%>%
+  group_by(map_name)%>%
+  # pivot_wider(names_from = map_name, values_from = avg_times)%>%
+  summarise(min = min(avg_times, na.rm=TRUE), mean = mean(avg_times, na.rm=TRUE))
+
+rownames(data1) = data1$map_name
+d1 = t(data1)
+d1 = data.frame(d1)
+d1 = d1[-c(1),]
+
+d1 = d1[, order(names(d1))]
+
+kbl(d1)
+
+a = kbl(d1, format="latex", booktabs = T)%>%
+  column_spec(2, width="3cm")%>%
+  column_spec(3, width="3cm")%>%
+  column_spec(4, width="3cm")
+  # column_spec(5, width="3cm")
+print(a)
+
+```
+```{r}
+
+d_table2 = data %>%
+  filter(test_name=="FGM"| test_name=='PP')%>%
   select(map_name, path, avg_times)%>%
   pivot_wider(names_from = map_name, values_from = avg_times)
   # arrange(set_n)
 
-kbl(d_table)
+rownames(d_table2) = d_table2$path
+# d2 = d_table2
+d2 = d_table2[,-c(1)]
+rownames(d2) = c("FGM", "PP")
+d2 = d2[, order(names(d2))]
+kbl(d2)
+
+# d3 = rbind(d1, d2)
+# 
+# kbl(d3)
 
 ```
+
 ```{r, comment=NA}
 d_table = data %>%
   filter(test_name=="FGM"| test_name=='PP'|test_name=='BaselineDRL')%>%
@@ -68,6 +104,37 @@ a = kbl(d_table, format="latex", booktabs = T)%>%
 print(a)
 # stargazer(d_table[1:2,], summary=FALSE)
 # print(stargazer(d_table[1:2,], summary=FALSE),  file="BenchmarkTable.tex")
+```
+
+### Repeat
+
+```{r, comment=NA}
+data %>%
+  filter(test_name=='BaselineDRL_r')%>%
+  filter(avg_times>0)%>%
+  select(map_name, n, path, avg_times)%>%
+  ggplot(aes(x=map_name, y=avg_times))+
+  geom_boxplot(colour="blue3", lwd=1, outlier.shape=NA)+
+  ylab("Average Lap-times")+
+  xlab("Map Name")+ 
+  ylim(0, 160)+
+  geom_point(color="forestgreen", size=4)+
+  # theme_bw(base_line_size=1)
+  theme_linedraw()
+  # geom_point(aes(y=mean(avg_times)), shape=4, size=10)
+
+ggsave("BaselineRepeatBoxplot.pdf", width=6, height=4)
+
+```
+
+```{r, comment=NA}
+zero = data %>%
+  filter(test_name=='BaselineDRL_r')%>%
+  filter(avg_times==0)%>%
+  select(map_name, n, path, avg_times)
+
+kbl(zero)
+  
 ```
 
 ## Baseline Tests

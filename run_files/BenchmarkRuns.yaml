@@ -4,27 +4,29 @@
 # test_name: "PP"
 
 reward_name: "Progress"
-test_name: "BaselineDRL"
+test_name: "BaselineDRL_r"
 
-n: 1
+n: 10
 set_n: 2
 
-n_train_steps: 30000
+n_train_steps: 25000
 # n_test_laps: 2
-n_test_laps: 1
+n_test_laps: 10
 
-# show_train: True
-show_train: False
+show_train: True
+# show_train: False
 show_test: True
 # show_test: False
 verbose: True
 # verbose: False
 
+logging: False
+
 
 runs:
-  # - run: 4
-  #   run_name: " "
-  #   map_name: "levine_blocked"
+  - run: 4
+    run_name: " "
+    map_name: "levine_blocked"
 
   - run: 1
     run_name: " "
@@ -35,9 +37,9 @@ runs:
     run_name: " "
     map_name: "f1_aut_wide"
 
-  - run: 1
-    run_name: " "
-    map_name: "example_map"
+  # - run: 1
+  #   run_name: " "
+  #   map_name: "example_map"
 
 
   # - run: 2
