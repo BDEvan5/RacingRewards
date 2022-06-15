@@ -4,7 +4,7 @@ test_name: "SimulationTest"
 
 # Agent params
 n: 1
-set_n: 1
+set_n: 2
 
 n_train_steps: 20000
 n_test_laps: 10

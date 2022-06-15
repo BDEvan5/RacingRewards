@@ -35,16 +35,17 @@ class BaseVehicle:
             nn_obs: observation vector for neural network
         """
 
-        v_current = obs['state'][3]
-        d_current = obs['state'][4]
+        # v_current = obs['state'][3]
+        # d_current = obs['state'][4]
         scan = np.array(obs['scan']) 
 
         scan = np.clip(scan/self.range_finder_scale, 0, 1)
 
-        cur_v = [v_current/self.max_v]
-        cur_d = [d_current/self.max_steer]
+        # cur_v = [v_current/self.max_v]
+        # cur_d = [d_current/self.max_steer]
 
-        nn_obs = np.concatenate([cur_v, cur_d, scan])
+        # nn_obs = np.concatenate([cur_v, cur_d, scan])
+        nn_obs = scan
 
         return nn_obs
 
@@ -68,7 +69,7 @@ class TrainVehicle(BaseVehicle):
 
         self.path = sim_conf.vehicle_path + run.path + run.run_name 
         if not load: init_file_struct(self.path)
-        state_space = 2 + self.n_beams
+        state_space =  self.n_beams # + 2
         self.agent = TD3(state_space, 1, 1, run.run_name)
         self.agent.try_load(load, sim_conf.h_size, self.path)
 
