@@ -26,7 +26,7 @@ class TestSimulation():
         # flags 
         self.show_test = False
         self.show_train = False
-        self.verbose = False
+        self.verbose = False #TODO: this should come from the config file
 
     def run_testing_evaluation(self):
         for run in self.run_data:
