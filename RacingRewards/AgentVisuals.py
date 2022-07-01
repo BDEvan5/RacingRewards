@@ -24,6 +24,7 @@ class AgentWrapped:
         self.scanner.set_map("maps/" + map_name + ".yaml", ".png")
 
         self.map_data = MapData(map_name)
+        self.map_data._expand_wpts()
 
         self.scans = []
         self.values = [] # ordered list of values corressponding to scans
@@ -43,12 +44,32 @@ class AgentWrapped:
 
         self.poses[:, 0:2] = pts
         self.poses[:-1, 2] = angles
+    
+    def convert_scan_xy(self, scan):
+        angles = np.linspace(-np.pi/2, np.pi/2, 20)
+        xs = np.sin(angles) * scan 
+        ys = np.cos(angles) * scan
+
+        return xs, ys
 
     def generate_pose_states(self):
-        
+        action = np.array([0]) # go straight
+        action_tensor = torch.from_numpy(action).float().unsqueeze(0)
+        plt.figure(3)
         for pose in self.poses:
             scan = self.scanner.scan(pose, None)
-            self.scans.append(scan)
+
+            scan_tensor = torch.from_numpy(scan).float().unsqueeze(0)
+
+            value = self.agent.Q1(scan_tensor, action_tensor).item()
+            self.values.append(value)
+
+            if False:
+                plt.clf()
+                plt.title(f"Scan value: {value}")
+                xs, ys = self.convert_scan_xy(scan)
+                plt.plot(xs, ys)
+                plt.show()
 
     def plot_poses(self):
         plt.figure(1)

@@ -3,6 +3,7 @@ import numpy as np
 from PIL import Image
 import csv 
 import yaml
+from numba import njit
 
 class MapData:
     def __init__(self, map_name):
@@ -75,5 +76,42 @@ class MapData:
         self.height = self.map_img.shape[1]
         self.width = self.map_img.shape[0]
 
+
+    def _expand_wpts(self):
+        n = 5 # number of pts per orig pt 
+        dz = 1 / n
+        o_line = self.cline
+        # o_vs = self.vs
+        new_line = []
+        # new_vs = []
+        for i in range(len(o_line)-1):
+            dd = sub_locations(o_line[i+1], o_line[i])
+            for j in range(n):
+                pt = add_locations(o_line[i], dd, dz*j)
+                new_line.append(pt)
+
+                # dv = o_vs[i+1] - o_vs[i]
+                # new_vs.append(o_vs[i] + dv * j * dz)
+
+        self.cline = np.array(new_line)
+        self.N = len(self.cline)
+        # self.vs = np.array(new_vs)
+
+
+@njit(fastmath=True, cache=True)
+def add_locations(x1, x2, dx=1):
+    # dx is a scaling factor
+    ret = np.array([0.0, 0.0])
+    for i in range(2):
+        ret[i] = x1[i] + x2[i] * dx
+    return ret
+
+@njit(fastmath=True, cache=True)
+def sub_locations(x1=[0, 0], x2=[0, 0], dx=1):
+    # dx is a scaling factor
+    ret = np.array([0.0, 0.0])
+    for i in range(2):
+        ret[i] = x1[i] - x2[i] * dx
+    return ret
 
 
