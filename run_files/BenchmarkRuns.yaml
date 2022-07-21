@@ -8,9 +8,9 @@ test_name: "BaselineSSS"
 # test_name: "BaselineDRL_r"
 
 n: 1
-set_n: 1
+set_n: 4
 
-n_train_steps: 25000
+n_train_steps: 30000
 # n_test_laps: 2
 n_test_laps: 10
 

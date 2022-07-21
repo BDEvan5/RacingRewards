@@ -3,6 +3,8 @@ import matplotlib.pyplot as plt
 import tikzplotlib
 import csv
 
+path = "Data/Vehicles/BaselineSSS/BaselineSSS_levine_blocked_4_0_0/"
+
 def moving_average(data, period):
     ret = np.convolve(data, np.ones(period), 'same') / period
     for i in range(period):
@@ -14,7 +16,6 @@ def moving_average(data, period):
 
 def load_csv_reward():
     rewards, lengths = [], []
-    path = "Data/Vehicles/BaselineSSS/BaselineSSS_levine_blocked_1_0_0/"
     with open(f"{path}training_data.csv", "r") as f:
         reader = csv.reader(f)
         for row in reader:
@@ -25,7 +26,6 @@ def load_csv_reward():
 
 from matplotlib.ticker import MultipleLocator
 def plot_reward_steps():
-    path = "Data/Vehicles/BaselineSSS/BaselineSSS_levine_blocked_1_0_0/"
     rewards, lengths = load_csv_reward()
 
     plt.figure(1)
