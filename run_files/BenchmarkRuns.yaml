@@ -4,10 +4,11 @@
 # test_name: "PP"
 
 reward_name: "Progress"
-test_name: "BaselineDRL_r"
+test_name: "BaselineSSS"
+# test_name: "BaselineDRL_r"
 
-n: 10
-set_n: 2
+n: 1
+set_n: 1
 
 n_train_steps: 25000
 # n_test_laps: 2
@@ -28,14 +29,14 @@ runs:
     run_name: " "
     map_name: "levine_blocked"
 
-  - run: 1
-    run_name: " "
-    map_name: "columbia_small"
+  # - run: 1
+  #   run_name: " "
+  #   map_name: "columbia_small"
 
 
-  - run: 3
-    run_name: " "
-    map_name: "f1_aut_wide"
+  # - run: 3
+  #   run_name: " "
+  #   map_name: "f1_aut_wide"
 
   # - run: 1
   #   run_name: " "

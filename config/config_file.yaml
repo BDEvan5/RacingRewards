@@ -22,7 +22,7 @@ h_size: 100               # size of hidden layers in NN
 
 
 #simulator
-sim_steps: 5              # Number of simulator steps per planning step
+sim_steps: 10              # Number of simulator steps per planning step
 max_steps: 1000
 # add a simtime step?
 random_seed: 1000          # Seed for NumPy randomness
